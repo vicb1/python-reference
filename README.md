@@ -9,10 +9,10 @@
 `conda env export > environment.yml`
 `conda env create -f environment.yml`
 
-#### ssh connection:
+#### ssh connection
 `ssh -X vbajenaru3@buffet01.cc.gatech.edu`
 
-#### Ubuntu Nautilus file transfer:
+#### Ubuntu Nautilus file transfer
 `sftp://vbajenaru3@buffet01.cc.gatech.edu/home/vbajenaru3/`
 
 ### other references
