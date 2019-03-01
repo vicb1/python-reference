@@ -19,3 +19,5 @@
 https://github.com/quantopian/qgrid
 
 https://docs.python.org/3/howto/regex.html
+
+https://github.com/koalyptus/TableFilter
