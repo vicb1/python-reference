@@ -1,0 +1,1024 @@
+---
+title: "Detailed Women's NCAA stats over time"
+author: "Jason Zivkovic"
+date: "24/02/2019"
+output:
+  html_document:
+        toc: yes
+        theme: spacelab
+        highlight: tango
+        df_print: paged
+        code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(gridExtra)
+library(knitr)
+library(magrittr)
+library(ggExtra)
+```
+
+
+```{r}
+reg_season_stats <- read.csv("../input/wdatafiles/WRegularSeasonDetailedResults.csv", stringsAsFactors = FALSE)
+tourney_stats <- read.csv("../input/wdatafiles/WNCAATourneyDetailedResults.csv", stringsAsFactors = FALSE)
+teams <- read.csv("../input/wdatafiles/WTeams.csv", stringsAsFactors = FALSE)
+tourney_stats_compact <- read.csv("../input/wdatafiles/WNCAATourneyCompactResults.csv",stringsAsFactors = FALSE)
+tourney_seeds <- read.csv("../input/wdatafiles/WNCAATourneySeeds.csv", stringsAsFactors = FALSE)
+```
+
+
+***
+
+# Introduction
+
+The below analysis is the "sister" version of the men's competition I completed (https://www.kaggle.com/jaseziv83/a-very-deep-look-at-the-men-s-ncaab). 
+
+The analysis will be conducted on both the regular season and tournament statistics. It will begin by taking a high level view at the NCAA championships - who has won them and how.
+
+Then it will move on to analyse the averages per regular season of the teams and then take those season averages of each team and plot their correlation with wins.
+
+The analysis will then included a detailed look at **Advanced Metrics** and analyse their relationship with team performance, both at a per game level, and by taking a look at the overall season performance. It will highlight the performance of the champion team in each season with regards to these metrics. This section will show the importance of some of these advanced metrics, and how they can help explain basketball games better than the traditional box score statistics.
+
+It will continue highlighting the champion teams performance with regards to tradition box score stats for the season.
+
+The analysis will then move on to comparing the differences in team stats between regular season play and tournament play to see whether the tournament games yield a different style of play.
+
+Finally, per game statistics will be analysed for 2014 - 2018 and compared between winning and losing teams, and also looks at if there is a difference between winning and losing in both tournament and regular season games.
+
+
+I will build upon this kernel throughout the competition. Feel free to add in any suggestions. If you like the analysis, an upvote would also be greatly appreciated!
+
+
+# NCAA Tournament Analysis
+
+The first section of this kernel will explore some high level analysis of the NCAA tournament over the last 21 seasons. Specifically, I will look at the winningest schools and the biggest bridesmaides of the tournament.
+
+## Who is the winningest school? Who has been the bridesmaid the most?
+
+Stats don't lie! Connecticut have been one very dominant program, winning 10 of the last 21 national championships! Interestingly, they have not come in second place in the last 21 years.Notre Dame, followed by Tennessee are the biggest bridesmaid with four and three runner-up titles apiece.
+
+```{r, fig.width=10}
+# Join team names to tourney compact dataset
+tourney_stats_compact <- tourney_stats_compact %>%
+  left_join(teams, by = c("WTeamID" = "TeamID")) %>%
+  left_join(teams, by = c("LTeamID" = "TeamID"))
+
+tourney_stats_compact <- tourney_stats_compact %>%
+  rename(WTeamName = TeamName.x,
+         LTeamName = TeamName.y)
+
+tourney_stats_compact$season_day <- paste(tourney_stats_compact$Season, tourney_stats_compact$DayNum, sep = "_")
+
+ncaa_champs <- tourney_stats_compact %>%
+  group_by(Season) %>%
+  summarise(max_days = max(DayNum)) %>%
+  mutate(season_day = paste(Season, max_days, sep = "_")) %>%
+  left_join(tourney_stats_compact, by = "season_day") %>% ungroup() %>%
+  select(-Season.y) %>%
+  rename(Season = Season.x)
+
+win_plot <- ncaa_champs %>%
+  group_by(WTeamName) %>%
+  summarise(n = n()) %>%
+  ggplot(aes(x=reorder(WTeamName,n), y=n)) +
+  geom_bar(stat = "identity", fill = "steelblue", color = "black") +
+  theme_minimal()+
+  labs(title = "Most Tourney Wins since 1985", x= "Winner", y= "Titles") +
+  coord_flip()
+
+
+lose_plot <- ncaa_champs %>%
+  group_by(LTeamName) %>%
+  summarise(n = n()) %>%
+  ggplot(aes(x=reorder(LTeamName, n), y=n)) +
+  geom_bar(stat = "identity", fill = "orange", colour = "black") +
+  theme_minimal()+
+  labs(title = "Most Tourney Bridesmaids since 1985", x= "Runner-up", y= "Titles") +
+  coord_flip()
+
+grid.arrange(win_plot, lose_plot, ncol = 2)
+
+```
+
+
+## Seeds with the most titles
+
+Wow! Quite differently to the men's competittion, the winner of the Women's tourney have only come from the first or second seed, and even that has an imbalance, with the first seed winning in 17 of the 21 years analysed. This will no doubt be a strong feature in any model.
+
+```{r}
+tourney_seeds$Seed <- as.integer(str_extract_all(tourney_seeds$Seed, "[0-9]+"))
+
+ncaa_champs %>%
+  select(Season, TeamID = WTeamID) %>%
+  left_join(tourney_seeds, by = c("Season", "TeamID")) %>%
+  count(Seed, sort = T) %>%
+  mutate(Seed = as.character(Seed)) %>%
+  ggplot(aes(x= reorder(Seed, n), y= n)) +
+  geom_point(size = 4, color = "orange") +
+  geom_segment(aes(x= Seed, xend = Seed, y= 0, yend = n), color = "steelblue", size = 1) +
+  coord_flip() +
+  theme_minimal() +
+  theme(axis.title = element_blank()) +
+  ggtitle("Which seeds have won the most titles")
+  
+```
+
+
+# Averages per season
+
+This kernel now moves on to analysing the average team stats per regular season.
+
+
+## Pre-Processing
+
+I won't go in to the detail of the pre-processing steps I've used. It's outlined in this kernel: https://www.kaggle.com/jaseziv83/pre-processing-to-get-you-started
+
+```{r}
+## calculate possessions per game statistic: field goal attempts + 0.475 x free throw attempts - offensive rebounds + turnovers
+
+# regular season
+reg_season_stats <- reg_season_stats %>%
+  mutate(WPoss = WFGA + (WFTA * 0.475) + WTO - WOR,
+         LPoss = LFGA + (LFTA * 0.475) + LTO - LOR)
+
+
+# Tourney
+tourney_stats <- tourney_stats %>%
+  mutate(WPoss = WFGA + (WFTA * 0.475) + WTO - WOR,
+         LPoss = LFGA + (LFTA * 0.475) + LTO - LOR)
+
+
+#---------- tidy data for regular season totals ----------#
+
+# First I will define a function that will take the detailed results data and reshape it so that it results in a dataframe where 
+# each observation is a team for that season and their totals statistics for that season. It will also calculate the statistics allowed
+# for the season. This function only requires one parameter to be passed to it: either the regular season or Tourney detailed data.
+
+# IMPORTANT: #
+# The data required for this function to work is either the regular season or tourney detailed stats, and the "teams" dataset
+
+reshape_detailed_results <- function(detailed_dataset) {
+  
+  season_team_stats_tot <- rbind(
+    detailed_dataset %>%
+      select(Season, DayNum, TeamID=WTeamID, Score=WScore, OScore=LScore, WLoc, NumOT, Poss=WPoss, FGM=WFGM, FGA=WFGA, FGM3=WFGM3,  FGA3=WFGA3, FTM=WFTM, FTA=WFTA, OR=WOR,
+             DR=WDR, Ast=WAst, TO=WTO, Stl=WStl, Blk=WBlk, PF=WPF, OPoss=LPoss, OFGM=LFGM, OFGA=LFGA, OFGM3=LFGM3, OFGA3=LFGA3, OFTM=LFTM, OFTA=LFTA, O_OR=LOR, ODR=LDR,
+             OAst=LAst, OTO=LTO, OStl=LStl, OBlk=LBlk, OPF=LPF) %>%
+      mutate(Winner=1),
+    
+    detailed_dataset %>%
+      select(Season, DayNum, TeamID=LTeamID, Score=LScore, OScore=WScore, WLoc, NumOT, Poss=LPoss, FGM=LFGM, FGA=LFGA, FGM3=LFGM3,  FGA3=LFGA3, FTM=LFTM, FTA=LFTA, OR=LOR,
+             DR=LDR, Ast=LAst, TO=LTO, Stl=LStl, Blk=LBlk, PF=LPF, OPoss=WPoss, OFGM=WFGM, OFGA=WFGA, OFGM3=WFGM3, OFGA3=WFGA3, OFTM=WFTM, OFTA=WFTA, O_OR=WOR, ODR=WDR,
+             OAst=WAst, OTO=WTO, OStl=WStl, OBlk=WBlk, OPF=WPF) %>%
+      mutate(Winner=0)) %>%
+    group_by(Season, TeamID) %>%
+    summarise(GP = n(),
+              wins = sum(Winner),
+              TotPoints = sum(Score),
+              TotPointsAllow = sum(OScore),
+              NumOT = sum(NumOT),
+              TotPos = sum(Poss),
+              TotFGM = sum(FGM),
+              TotFGA = sum(FGA),
+              TotFGM3 = sum(FGM3),
+              TotFGA3 = sum(FGA3),
+              TotFTM = sum(FTM),
+              TotFTA = sum(FTA),
+              TotOR = sum(OR),
+              TotDR = sum(DR),
+              TotAst = sum(Ast),
+              TotTO = sum(TO),
+              TotStl = sum(Stl),
+              TotBlk = sum(Blk),
+              TotPF = sum(PF),
+              TotPossAllow = sum(OPoss),
+              TotFGMAllow = sum(OFGM),
+              TotFGAAllow = sum(OFGA),
+              TotFGM3Allow = sum(OFGM3),
+              TotFGA3Allow = sum(OFGA3),
+              TotFTMAllow = sum(OFTM),
+              TotFTAAllow = sum(OFTA),
+              TotORAllow = sum(O_OR),
+              TotDRAllow = sum(ODR),
+              TotAstAllow = sum(OAst),
+              TotTOAllow = sum(OTO),
+              TotStlAllow = sum(OStl),
+              TotBlkAllow = sum(OBlk),
+              TotPFAllow = sum(OPF))
+  
+}
+
+## Store the results to a dataframe
+season_team_stats_tot <- reshape_detailed_results(reg_season_stats)
+
+## calculate win percentage
+season_team_stats_tot$WinPerc <- season_team_stats_tot$wins / season_team_stats_tot$GP
+
+
+
+#---------- Create a dataframe of season averages for each team ----------#
+
+# Next I will define a function that takes in the totals dataframe from the above function and calculate a season averages dataset.
+# this function also only requires one parameter to be passed to it, the totals dataframe.
+
+calculate_detailed_averages <- function(totals_dataframe) {
+  
+  averages <- totals_dataframe
+  
+  cols <- names(averages[,c(5:35)])
+  
+  for (eachcol in cols) {
+    averages[,eachcol] <- round(averages[,eachcol] / averages$GP,2)
+    
+  }
+  
+  averages <- averages %>%
+    rename(AvgPoints = TotPoints, AvgPointsAllow=TotPointsAllow, AvgOT=NumOT, AvgPoss=TotPos, AvgFGM=TotFGM,  AvgFGA=TotFGA, AvgFGM3=TotFGM3, AvgFGA3=TotFGA3, AvgFTM=TotFTM,
+           AvgFTA=TotFTA, AvgOR=TotOR, Avg_DR=TotDR, AvgAst=TotAst, AvgTO=TotTO, AvgStl=TotStl, Avg_Blk=TotBlk, AvgPF=TotPF, AvgPossAllow=TotPossAllow, AvgFGMAllow=TotFGMAllow, 
+           AvgFGAAllow=TotFGAAllow,  AvgFGM3Allow=TotFGM3Allow, AvgFGA3Allow=TotFGA3Allow,  AvgFTMAllow=TotFTMAllow, AvgFTAAllow=TotFTAAllow, 
+           AvgORAllow=TotORAllow, AvgDRAllow=TotDRAllow,  AvgAstAllow=TotAstAllow, AvgTOAllow=TotTOAllow, AvgStlAllow=TotStlAllow,  AvgBlkAllow=TotBlkAllow,
+           AvgPFAllow=TotPFAllow) %>%
+    mutate(PointsPerPoss = AvgPoints / AvgPoss,
+           PointsPerPossAllow = AvgPointsAllow / AvgPossAllow)
+  
+  return(averages)
+  
+}
+
+
+# create an averages dataframe
+season_team_stats_averages <- calculate_detailed_averages(season_team_stats_tot)
+
+
+```
+
+## Points per game
+The average points per game had a decline of over 2 points per game between 2010-2013, to then see a massive spike in 2014, to thrn drop since then.
+
+```{r}
+season_team_stats_averages %>%
+  group_by(Season) %>%
+  summarise(AvgPoints = mean(AvgPoints)) %>%
+  ggplot(aes(x= Season, y= AvgPoints, group = 1)) +
+  geom_line(color = "steelblue", size = 1) +
+  geom_point(size = 2, colour = "orange") +
+  ggtitle("Average Points Per Game reached a new high in 2018") +
+  theme_minimal()
+
+```
+
+## Possessions per game
+Similarly, the possessions per game follow a similar trend - makes sense as it's pretty hard to score without having the ball.
+
+```{r}
+season_team_stats_averages %>%
+  group_by(Season) %>%
+  summarise(AvgPoss = mean(AvgPoss)) %>%
+  ggplot(aes(x= Season, y= AvgPoss, group = 1)) +
+  geom_line(color = "steelblue", size = 1) +
+  geom_point(size = 2, colour = "orange") +
+  ggtitle("Average Possessions per season going up") +
+  theme_minimal()
+```
+
+
+## Three pointers made and attempted
+It's a fairly well known trend, but the average number of threes attempted and made is steadily increasing.
+
+```{r}
+season_team_stats_averages %>% ungroup() %>%
+  select(Season, AvgFGA3, AvgFGM3) %>%
+  gather(key = "Stat", value = "Average", -Season) %>%
+  group_by(Season, Stat) %>%
+  summarise(Average = mean(Average)) %>%
+  ggplot(aes(x= Season, y= Average, group = Stat, colour = Stat)) +
+  geom_line() +
+  scale_color_manual(values = c("steelblue", "orange")) +
+  ggtitle("Average threes made and attempted are increasing") +
+  theme_minimal()
+```
+
+
+## Average Assists
+There was a dip in the average number of assists in 2015, but it too is rebounding, with a record equalling high in 2018.
+
+```{r}
+season_team_stats_averages %>%
+  group_by(Season) %>%
+  summarise(AvgAst = mean(AvgAst)) %>%
+  ggplot(aes(x= Season, y= AvgAst, group = 1)) +
+  geom_line(color = "steelblue", size = 1) +
+  geom_point(size = 2, colour = "orange") +
+  ggtitle("Average Assists per season had a big dip in 2015") +
+  theme_minimal()
+```
+
+## Average Rebounds
+The average number of both defensive and offensive rebounds is dropping somewhat.
+
+```{r}
+season_team_stats_averages %>% ungroup() %>%
+  select(Season, AvgOR, Avg_DR) %>%
+  gather(key = "Stat", value = "Average", -Season) %>%
+  group_by(Season, Stat) %>%
+  summarise(Average = mean(Average)) %>%
+  ggplot(aes(x= Season, y= Average, group = Stat, colour = Stat)) +
+  geom_line() +
+  scale_color_manual(values = c("steelblue", "orange")) +
+  ggtitle("Defensive Rebounds are  increasing since 2013") +
+  theme_minimal()
+```
+
+***
+
+# Advanced Stats
+
+In this section, I will analyse the impact of advanced stats on a teams performance.
+
+The first subsection will deal with per-game advanced stats, while the second will look at season-aggregated advanced stats.
+
+As a lot of you are probably aware, since the popularisation of sabermetrics and integration of advanced analytics into other sports, there are better ways of measuring a team's expected success. These per game advanced analytics are displayed below. These metrics all show a considerable difference when comparing wins and losses in regular season play between 2010 and 2018.
+
+The calculations of the displayed advanced stats are as follows:
+
+$$\text{Possessions} \ = \text{ 0.96 x (FGA + Turnovers + (0.475 x FTA) - Off rebounds }$$
+
+$$\text{Offensive Rating} \ = \text{ 100 x (Score / Possessions)}$$
+
+$$\text{Defensive Rating} \ = \text{ 100 x (Opponent's Score / Possessions)}$$
+
+$$\text{Net Rating} \ = \text{ 100 x (Offensive Rating - Defensive Rating)}$$
+
+$$\text{Assist ratio} \ = \text{ 100 * Assists / (FGA + (0.475 * FTA) + Asistst + Turnovers))}$$
+
+$$\text{Turnover ratio} \ = \text{ 100 * Turnovers / (FGA + (0.475 * FTA) + Assists + Turnovers)}$$
+
+$$\text{True Shooting %} \ = \text{ 100 * Team Points / (2 * (FGA + (0.475 * FTA)))}$$
+
+$$\text{Effective FG%} \ = \text{ FGM + (0.5 * Threes Made) / FGA}$$
+
+$$\text{Free Throw rate} \ = \text{ FTA / FGA}$$
+
+
+## Per Game Advanced Stats
+
+```{r}
+# reg_season_stats <- read.csv("../DataFiles/RegularSeasonDetailedResults.csv", stringsAsFactors = FALSE)
+
+advanced_stats_per_game <- rbind(
+  reg_season_stats %>%
+    select(Season, DayNum, TeamID=WTeamID, Score=WScore, OScore=LScore, WLoc, NumOT, FGM=WFGM, FGA=WFGA, FGM3=WFGM3,  FGA3=WFGA3, FTM=WFTM, FTA=WFTA, OR=WOR, DR=WDR, Ast=WAst, TO=WTO, Stl=WStl, Blk=WBlk, PF=WPF, OFGM=LFGM, OFGA=LFGA, OFGM3=LFGM3, OFGA3=LFGA3, OFTM=LFTM, OFTA=LFTA, O_OR=LOR, ODR=LDR, OAst=LAst, OTO=LTO, OStl=LStl, OBlk=LBlk, OPF=LPF) %>%
+    mutate(Winner=1),
+
+  reg_season_stats %>%
+    select(Season, DayNum, TeamID=LTeamID, Score=LScore, OScore=WScore, WLoc, NumOT, FGM=LFGM, FGA=LFGA, FGM3=LFGM3,  FGA3=LFGA3, FTM=LFTM, FTA=LFTA, OR=LOR, DR=LDR, Ast=LAst, TO=LTO, Stl=LStl, Blk=LBlk, PF=LPF, OFGM=WFGM, OFGA=WFGA, OFGM3=WFGM3, OFGA3=WFGA3, OFTM=WFTM, OFTA=WFTA, O_OR=WOR, ODR=WDR, OAst=WAst, OTO=WTO, OStl=WStl, OBlk=WBlk, OPF=WPF) %>%
+    mutate(Winner=0)) %>%
+  mutate(PtsDiff = Score - OScore)
+
+
+
+advanced_stats_per_game <- advanced_stats_per_game %>%
+  mutate(Poss = 0.96*(FGA + TO + (0.475*FTA) - OR),
+         OffRtg = 100 * (Score / Poss),
+         DefRtg = 100 * (OScore / Poss),
+         NetRtg = OffRtg - DefRtg,
+         AstRatio = 100 * Ast / (FGA + (0.475 * FTA) + Ast + TO),
+         TORatio = 100 * TO / (FGA + (0.475 * FTA) + Ast + TO),
+         TSPerc = 100 * Score / (2 * (FGA + (0.475 * FTA))),
+         EFGPerc = FGM + (0.5 * FGM3) / FGA,
+         FTRate = FTA / FGA) %>%
+  select(Season, DayNum, TeamID, Score, OScore, WLoc, NumOT, Winner, Poss, OffRtg, DefRtg, NetRtg, AstRatio, TORatio, TSPerc, EFGPerc, FTRate)
+
+```
+
+
+It is clear to see that there is a relationship between most of the advanced metrics calculated and wins. Higher `Offensive Rating`, `Assist Ratio`, `True Shooting Percentage`, `Effective FG%` and `Free Throw rate` all appear to lead to a greater chance of winning, while a lower `Defensive Rating` is also related to wins.
+
+```{r, fig.width=10}
+adv_plots <- function(variable, plot_name) {
+  
+  advanced_stats_per_game %>%
+  ggplot(aes(fill = factor(Winner))) +
+  geom_density(aes_string(x= variable), alpha = 0.5) +
+  scale_fill_manual(values = c("orange", "steelblue")) +
+  ggtitle(plot_name) +
+  theme_minimal() +
+  theme(legend.position = "none", axis.title.y = element_blank())
+}
+
+
+off_rat <- adv_plots("OffRtg", "Offensive Rating")
+
+def_rat <- adv_plots("DefRtg", "Defensive Rating")
+  
+net_rat <- adv_plots("NetRtg", "Net Rating")
+
+ast_ratio <- adv_plots("AstRatio", "Assist Ratio") 
+
+to_ratio <- adv_plots("TORatio", "Turnover Ratio")
+
+ts_perc <- adv_plots("TSPerc", "True Shooting Percentage")
+
+eff_fg_perc <- adv_plots("EFGPerc", "Effective FG%")
+
+ft_rate <- adv_plots("FTRate", "Free Throw Rate")
+
+grid.arrange(off_rat, def_rat, net_rat, ast_ratio, to_ratio, ts_perc, eff_fg_perc, ft_rate, ncol = 4, bottom = "Blue fill indicates winning team")
+
+```
+
+
+## Season Advanced and Box Score Stats and Wins
+
+This section of the analysis will look at the advanced stats for a team's performance over the season and plot the relationship with each stat with the total wins for the season. Highlighted points plot the NCAA champion for that season in orange to see where the champion sat compared to the other schools.
+
+
+```{r}
+# regular season
+# reg_season_stats <- reg_season_stats %>%
+#   mutate(WPoss = WFGA + (WFTA * 0.475) + WTO - WOR,
+#          LPoss = LFGA + (LFTA * 0.475) + LTO - LOR)
+
+season_team_stats_tot <- reshape_detailed_results(reg_season_stats)
+
+
+advanced_stats_season <- season_team_stats_tot %>%
+  mutate(WinPerc = wins / GP,
+         Poss = 0.96*(TotFGA + TotTO + (0.475* TotFTA) - TotOR),
+         OffRtg = 100 * (TotPoints / TotPos),
+         DefRtg = 100 * (TotPointsAllow / TotPos),
+         NetRtg = OffRtg - DefRtg,
+         AstRatio = 100 * TotAst / (TotFGA + (0.475 * TotFTA) + TotAst + TotTO),
+         TORatio = 100 * TotTO / (TotFGA + (0.475 * TotFTA) + TotAst + TotTO),
+         TSPerc = 100 * TotPoints / (2 * (TotFGA + (0.475 * TotFTA))),
+         EFGPerc = (TotFGM + (0.5 * TotFGM3) / TotFGA / GP),
+         FTRate = TotFTA / TotFGA,
+         ThreesShare = TotFGA3 / TotFGA) %>%
+  select(Season, TeamID, TotPoints, TotPointsAllow, wins, WinPerc, Poss, OffRtg, DefRtg, NetRtg, AstRatio, TORatio, TSPerc, EFGPerc, FTRate, ThreesShare) %>%
+  left_join(teams %>% select(TeamID, TeamName), by = "TeamID")
+
+ncaa_champs <- ncaa_champs %>% 
+  mutate(season_winner = paste(Season, WTeamID, sep = "_"))
+
+advanced_stats_season <- advanced_stats_season %>%
+  mutate(season_winner = paste(Season, TeamID, sep = "_"),
+         win_yes_no = ifelse(season_winner %in% ncaa_champs$season_winner, "Champs", "Not"))
+
+```
+
+
+There is a strong positive correlation (`r round(cor(advanced_stats_season$wins, advanced_stats_season$OffRtg), 4)`) between a teams offensive rating and the total number of wins for the season. The majority of the champions in each season were close to the highest offensive rating teams. Connecticut are by far the most dominant in this stat during their championship runs.
+
+```{r, fig.width=10}
+advanced_stats_season %>%
+  ggplot() +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Not"), aes(x= OffRtg, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= OffRtg, y= wins), color = "orange") +
+  geom_text(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= OffRtg, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Offensive Rating and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+```
+
+
+Conversely, there is a fairly strong negative correlation (`r round(cor(advanced_stats_season$wins, advanced_stats_season$DefRtg), 4)`) between a teams defensive rating and the number of wins for the season. Again, the Huskies are extremely dominant in their championship seasons. Texas A&M (2011) and Notre Dame (2018) were not all that dominant in their defensive rating, yet still won the title.
+
+```{r, fig.width=10}
+advanced_stats_season %>%
+  ggplot() +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Not"), aes(x= DefRtg, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= DefRtg, y= wins), color = "orange") +
+  geom_text(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= DefRtg, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Defensive Rating and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+```
+
+
+There is a very strong positive relationship (`r round(cor(advanced_stats_season$wins, advanced_stats_season$NetRtg), 4)`) between a team's net rating and their wins total for the season. Notre Dame in 2018 had the lowest net rating of any champ since 2010.
+
+```{r, fig.width=10}
+advanced_stats_season %>%
+  ggplot() +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Not"), aes(x= NetRtg, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= NetRtg, y= wins), color = "orange") +
+  geom_text(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= NetRtg, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Net Rating and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+```
+
+
+There is a moderately positive correlation (`r round(cor(advanced_stats_season$wins, advanced_stats_season$AstRatio), 4)`) between a team's assist ratio and their wins. Texam A&M and South Carolina had the lowest assist rations in their winning years.
+
+```{r, fig.width=10}
+advanced_stats_season %>%
+  ggplot() +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Not"), aes(x= AstRatio, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= AstRatio, y= wins), color = "orange") +
+  geom_text(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= AstRatio, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Assist Ratio and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+```
+
+
+There is a moderately strong negative (`r round(cor(advanced_stats_season$wins, advanced_stats_season$TORatio), 4)`) correlation between a team's turnover ratio and wins.
+
+```{r, fig.width=10}
+advanced_stats_season %>%
+  ggplot() +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Not"), aes(x= TORatio, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= TORatio, y= wins), color = "orange") +
+  geom_text(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= TORatio, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Turnover Ratio and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+```
+
+
+There is a strong positive correlation (`r round(cor(advanced_stats_season$wins, advanced_stats_season$TSPerc), 4)`) between a team's true shooting percentage and their wins, with all teams except for Texas A&M being near the leagu leader in their championship season.
+
+```{r, fig.width=10}
+advanced_stats_season %>%
+  ggplot() +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Not"), aes(x= TSPerc, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= TSPerc, y= wins), color = "orange") +
+  geom_text(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= TSPerc, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("True Shooting % and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+```
+
+
+There is a weak positive correlation (`r round(cor(advanced_stats_season$wins, advanced_stats_season$FTRate), 4)`) between a team's free throw rate and their wins for the season. The eventual champs have had both good and not so good seasons in this stat. Connecticut's rate was routinely at the lower end during their championship seasons.
+
+```{r, fig.width=10}
+advanced_stats_season %>%
+  ggplot() +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Not"), aes(x= FTRate, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= FTRate, y= wins), color = "orange") +
+  geom_text(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= FTRate, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Free Throw Rate and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+```
+
+
+There is almost no correlation (`r round(cor(advanced_stats_season$wins, advanced_stats_season$ThreesShare), 4)`) between the percentage of shots taken that are three point attempts and total wins for the season.
+
+```{r, fig.width=10}
+advanced_stats_season %>%
+  ggplot() +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Not"), aes(x= ThreesShare, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= ThreesShare, y= wins), color = "orange") +
+  geom_text(data = subset(advanced_stats_season, win_yes_no == "Champs"), aes(x= ThreesShare, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Three Pointers Share and Wins") +
+  scale_x_continuous(label = scales::percent) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+
+```
+
+
+There is a moderately strong positive correlation (`r round(cor(season_team_stats_averages$wins, season_team_stats_averages$AvgPoints), 4)`) between the average points per game for a season and the team's wins total.
+
+```{r, fig.width=10}
+season_team_stats_averages <- season_team_stats_averages %>%
+  mutate(season_winner = paste(Season, TeamID, sep = "_"),
+         win_yes_no = ifelse(season_winner %in% ncaa_champs$season_winner, "Champs", "Not")) %>%
+  left_join(teams %>% select(TeamID, TeamName), by = "TeamID")
+
+
+season_team_stats_averages %>%
+  ggplot() +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Not"), aes(x= AvgPoints, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= AvgPoints, y= wins), color = "orange") +
+  geom_text(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= AvgPoints, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Average Points Scored and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+
+
+```
+
+
+There is a not a relationship (`r round(cor(season_team_stats_averages$wins, season_team_stats_averages$AvgPoss), 4)`) between the average number of possessions per game and the team's wins total.
+
+```{r, fig.width=10}
+season_team_stats_averages %>%
+  ggplot() +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Not"), aes(x= AvgPoss, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= AvgPoss, y= wins), color = "orange") +
+  geom_text(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= AvgPoss, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Average Possessions and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+```
+
+
+There is a very weak positive relationship (`r round(cor(season_team_stats_averages$wins, season_team_stats_averages$AvgFGA3), 4)`) between the average number of threes attempted per game and the team's wins total.
+
+```{r, fig.width=10}
+season_team_stats_averages %>%
+  ggplot() +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Not"), aes(x= AvgFGA3, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= AvgFGA3, y= wins), color = "orange") +
+  geom_text(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= AvgFGA3, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Average Threes Attempted and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+```
+
+
+There appears to be a fairly weak positive (`r round(cor(season_team_stats_averages$wins, season_team_stats_averages$AvgFGM3), 4)`) relationship between the average number of threes made per game and the team's wins total.
+
+```{r, fig.width=10}
+season_team_stats_averages %>%
+  ggplot() +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Not"), aes(x= AvgFGM3, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= AvgFGM3, y= wins), color = "orange") +
+  geom_text(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= AvgFGM3, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Average Threes Made and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+```
+
+
+There appears to be a weak positive (`r round(cor(season_team_stats_averages$wins, season_team_stats_averages$AvgOR), 4)`) relationship between the average number of offensive rebounds per game and the team's wins total.
+
+```{r}
+season_team_stats_averages %>%
+  ggplot() +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Not"), aes(x= AvgOR, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= AvgOR, y= wins), color = "orange") +
+  geom_text(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= AvgOR, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Average Offensive Rebounds and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+```
+
+
+There is a stronger positive relationship (`r round(cor(season_team_stats_averages$wins, season_team_stats_averages$Avg_DR), 4)`) between the average number of defensive debounds per game and the team's wins total than there is for the previously analysed offensive rebounds.
+
+```{r, fig.width=10}
+season_team_stats_averages %>%
+  ggplot() +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Not"), aes(x= Avg_DR, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= Avg_DR, y= wins), color = "orange") +
+  geom_text(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= Avg_DR, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Average Defensive Rebounds and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+```
+
+
+There is a fairly weak positive correlation (`r round(cor(season_team_stats_averages$wins, season_team_stats_averages$Avg_Blk), 4)`) between the average number of blocks per game and team wins for the season. Baylor in 2012 and Connecticut's four-peat(2013-2016) really stood out, while other winners have not relied on this defensive stat.
+
+```{r, fig.width=10}
+season_team_stats_averages %>%
+  ggplot() +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Not"), aes(x= Avg_Blk, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= Avg_Blk, y= wins), color = "orange") +
+  geom_text(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= Avg_Blk, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Average Blocks and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+```
+
+
+There is a weak positive correlation (`r round(cor(season_team_stats_averages$wins, season_team_stats_averages$AvgStl), 4)`) between the average number of steals per game and team wins for the season. The overall champs have not really relied on this stat either in their championship years.
+
+```{r, fig.width=10}
+season_team_stats_averages %>%
+  ggplot() +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Not"), aes(x= AvgStl, y= wins), alpha = 0.5, color = "lightgrey") +
+  geom_point(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= AvgStl, y= wins), color = "orange") +
+  geom_text(data = subset(season_team_stats_averages, win_yes_no == "Champs"), aes(x= AvgStl, y= wins, label = TeamName), nudge_y = 4, colour = "orange") +
+  ggtitle("Average Steals and Wins") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_wrap(~Season)
+
+```
+
+
+# Tournament vs Regular Season Stats Analysis
+
+
+```{r}
+# create a variable to distinguish between the regular season and tournament stats
+reg_season_stats$Type <- "RegularSeason"
+tourney_stats$Type <- "Tournament"
+
+# join the regular season and tourney detailed stats
+joined_reg_tourney <- rbind(reg_season_stats, tourney_stats)
+
+
+```
+
+This section will explore the differences in the key statistics between regular season and tournament games for **winning teams**.
+
+One would this that games would be played differently under the pressure-cooker environmet of tourney play, so let's see...
+
+## Points
+
+Overall, the winning team appears to score more points in tournament play than regular season games. The margins are also slightly higher in the tourney.
+
+```{r}
+a <- joined_reg_tourney %>%
+  ggplot(aes(x= WScore, fill = Type)) +
+  geom_density(alpha = 0.5) +
+  scale_fill_manual(values = c("steelblue", "orange")) +
+  ggtitle("Winning Team Points and margins in the regular \nseason and tourney roughly the same") +
+  labs(x= "Winning Team Score", y= "") +
+  theme_minimal() +
+  theme(legend.position = "top", legend.title = element_blank())
+
+b <- joined_reg_tourney %>%
+  mutate(Margin = WScore - LScore) %>%
+  ggplot(aes(x= Margin, fill = Type)) +
+  geom_density(alpha = 0.5) +
+  scale_fill_manual(values = c("steelblue", "orange")) +
+  labs(y= "") +
+  theme_minimal() + 
+  theme(legend.position = "none")
+
+grid.arrange(a, b)
+```
+
+
+## Field Goals
+
+The winning team will tame and make slightly more field goals in tourney games than the regular season.
+
+```{r}
+a <- joined_reg_tourney %>%
+  ggplot(aes(x= WFGA, fill = Type)) +
+  geom_density(alpha = 0.5) +
+  scale_fill_manual(values = c("steelblue", "orange")) +
+  ggtitle("Field Goal Attempts by winning team in the regular \nseason and tourney roughly the same") +
+  labs(x= "Winning Team FG Attempted", y= "") +
+  theme_minimal() +
+  theme(legend.position = "top", legend.title = element_blank())
+
+b <- joined_reg_tourney %>%
+  ggplot(aes(x= WFGM, fill = Type)) +
+  geom_density(alpha = 0.5, adjust = 1.5) +
+  scale_fill_manual(values = c("steelblue", "orange")) +
+  ggtitle("Winning Team has more Field Goals \nMade during the tourney") +
+  labs(x= "Winning Team FG Made", y= "") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+grid.arrange(a,b)
+
+```
+
+
+## Rebounds
+
+Offensive and defensive rebounds for winning teams have been fairly similar during the regular season games and tourney games. 
+
+```{r}
+a <- joined_reg_tourney %>%
+  ggplot(aes(x= WOR, fill = Type)) +
+  geom_density(alpha = 0.5, adjust = 1.5) +
+  scale_fill_manual(values = c("steelblue", "orange")) +
+  ggtitle("Winning team has slightly more Offensive Rebounds \nduring the regular season") +
+  labs(x= "Winning Team Offensive Rebounds", y= "") +
+  theme_minimal() +
+  theme(legend.position = "top", legend.title = element_blank())
+
+b <- joined_reg_tourney %>%
+  ggplot(aes(x= WDR, fill = Type)) +
+  geom_density(alpha = 0.5, adjust = 1.5) +
+  scale_fill_manual(values = c("steelblue", "orange")) +
+  ggtitle("Winning Team has slightly more Defensive Rebounds \nduring the tourney") +
+  labs(x= "Winning Team Defensive Rebounds", y= "") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+grid.arrange(a, b)  
+```
+
+
+# Relationship between statistics and wins
+
+This section will narrow the focus between winning and losing teams for the last five years. The game is changing rapidly, so I want to see how teams are winning games in the recent future. The **blue** fill relates to the winning team, while **orange** is for the losing team.
+
+## Offensive Stats
+
+Winning teams have slightly less field goal attempts than losing teams. This is more prevalent in the tournament games. 
+
+```{r}
+joined_reg_tourney %>%
+  filter(Season >= 2014) %>%
+  ggplot() +
+  geom_density(aes(x= WFGA), fill = "steelblue", alpha = 0.5, adjust = 2) +
+  geom_density(aes(x= LFGA), fill = "orange", alpha = 0.5, adjust = 2) +
+  ggtitle("Field Goal Attempts", subtitle = "Blue indicates winning team") +
+  labs(x= "Winning Team FG Attempted", y= "") +
+  theme_minimal() +
+  facet_grid(Type ~ Season) +
+  theme(strip.text = element_text(face = "bold"))
+```
+
+
+Conversely, winning teams make more field goals in both thournament and regular season play. Makes sense!
+
+```{r}
+joined_reg_tourney %>%
+  filter(Season >= 2014) %>%
+  ggplot() +
+  geom_density(aes(x= WFGM), fill = "steelblue", alpha = 0.5, adjust = 2) +
+  geom_density(aes(x= LFGM), fill = "orange", alpha = 0.5, adjust = 2) +
+  ggtitle("Field Goals Made", subtitle = "Blue indicates winning team") +
+  labs(x= "Winning Team FG Made", y= "") +
+  theme_minimal() +
+  facet_grid(Type ~ Season) +
+  theme(strip.text = element_text(face = "bold"))
+```
+
+
+The winning team also makes more threes, however this was not the case in tournamet play in 2015.
+
+```{r}
+joined_reg_tourney %>%
+  filter(Season >= 2014) %>%
+  ggplot() +
+  geom_density(aes(x= WFGM3), fill = "steelblue", alpha = 0.5, adjust = 2) +
+  geom_density(aes(x= LFGM3), fill = "orange", alpha = 0.5, adjust = 2) +
+  ggtitle("Threes made", subtitle = "Blue indicates winning team") +
+  labs(x= "Winning Team Threes Made", y= "") +
+  theme_minimal() +
+  facet_grid(Type ~ Season) +
+  theme(strip.text = element_text(face = "bold")) 
+```
+
+
+The winning team clearly gets to the line more often, and more importantly, makes more of their free throws.
+
+```{r}
+joined_reg_tourney %>%
+  filter(Season >= 2014) %>%
+  ggplot() +
+  geom_density(aes(x= WFTM), fill = "steelblue", alpha = 0.5, adjust = 2) +
+  geom_density(aes(x= LFTM), fill = "orange", alpha = 0.5, adjust = 2) +
+  ggtitle("Free Throws Made", subtitle = "Blue indicates winning team") +
+  labs(x= "Winning Team FT Made", y= "") +
+  theme_minimal() +
+  facet_grid(Type ~ Season) +
+  theme(strip.text = element_text(face = "bold"))
+
+
+joined_reg_tourney %>%
+  filter(Season >= 2014) %>%
+  ggplot() +
+  geom_density(aes(x= WFTA), fill = "steelblue", alpha = 0.5, adjust = 2) +
+  geom_density(aes(x= LFTA), fill = "orange", alpha = 0.5, adjust = 2) +
+  ggtitle("Free Throws Attempted", subtitle = "Blue indicates winning team") +
+  labs(x= "Winning Team FT Attempted", y= "") +
+  theme_minimal() +
+  facet_grid(Type ~ Season) +
+  theme(strip.text = element_text(face = "bold"))
+```
+
+
+There doesn't appear to be a difference between winning and losing teams in the regular season.
+
+Conversely, defensive rebounds to appear to be important for the winning team, with the winning team recording more in each of the five seasons in both regular season and tournament play.
+
+```{r}
+joined_reg_tourney %>%
+  filter(Season >= 2014) %>%
+  ggplot() +
+  geom_density(aes(x= WOR), fill = "steelblue", alpha = 0.5, adjust = 2) +
+  geom_density(aes(x= LOR), fill = "orange", alpha = 0.5, adjust = 2) +
+  ggtitle("Offensive Rebounds", subtitle = "Blue indicates winning team") +
+  labs(x= "Winning Team Offensive Rebounds", y= "") +
+  theme_minimal() +
+  facet_grid(Type ~ Season) +
+  theme(strip.text = element_text(face = "bold"))
+
+
+joined_reg_tourney %>%
+  filter(Season >= 2014) %>%
+  ggplot() +
+  geom_density(aes(x= WDR), fill = "steelblue", alpha = 0.5, adjust = 2) +
+  geom_density(aes(x= LDR), fill = "orange", alpha = 0.5, adjust = 2) +
+  ggtitle("Defensive Rebounds", subtitle = "Blue indicates winning team") +
+  labs(x= "Winning Team Defensive Rebounds", y= "") +
+  theme_minimal() +
+  facet_grid(Type ~ Season) +
+  theme(strip.text = element_text(face = "bold"))
+```
+
+
+## Defensive Stats
+
+Winning teams record more blocks in game, and even more so during tournament play.
+
+While the winning team also records slightly more steals, the finding isn't as pronounced as it is for blocks.
+```{r}
+joined_reg_tourney %>%
+  filter(Season >= 2014) %>%
+  ggplot() +
+  geom_density(aes(x= WBlk), fill = "steelblue", alpha = 0.5, adjust = 2) +
+  geom_density(aes(x= LBlk), fill = "orange", alpha = 0.5, adjust = 2) +
+  ggtitle("Blocks", subtitle = "Blue indicates winning team") +
+  labs(x= "Winning Team Blocks", y= "") +
+  theme_minimal() +
+  facet_grid(Type ~ Season) +
+  theme(strip.text = element_text(face = "bold"))
+
+
+
+joined_reg_tourney %>%
+  filter(Season >= 2014) %>%
+  ggplot() +
+  geom_density(aes(x= WStl), fill = "steelblue", alpha = 0.5, adjust = 2) +
+  geom_density(aes(x= LStl), fill = "orange", alpha = 0.5, adjust = 2) +
+  ggtitle("Steals", subtitle = "Blue indicates winning team") +
+  labs(x= "Winning Team Steals", y= "") +
+  theme_minimal() +
+  facet_grid(Type ~ Season) +
+  theme(strip.text = element_text(face = "bold"))
+```
+
+
+## Other Stats
+
+There isn't much of a difference netween possessions of winning and losing teams in either regular seasons or tournaments. 
+
+```{r}
+joined_reg_tourney %>%
+  filter(Season >= 2014) %>%
+  ggplot() +
+  geom_density(aes(x= WPoss), fill = "steelblue", alpha = 0.5, adjust = 2) +
+  geom_density(aes(x= LPoss), fill = "orange", alpha = 0.5, adjust = 2) +
+  ggtitle("Possessions", subtitle = "Blue indicates winning team") +
+  labs(x= "Winning Team Possessions", y= "") +
+  theme_minimal() +
+  facet_grid(Type ~ Season) +
+  theme(strip.text = element_text(face = "bold"))
+```
+
+
+As would be expected, the losing team records more turnovers in both the regular season and tournaments, but not by as big a margin as I would've expected.
+
+```{r}
+joined_reg_tourney %>%
+  filter(Season >= 2014) %>%
+  ggplot() +
+  geom_density(aes(x= WTO), fill = "steelblue", alpha = 0.5, adjust = 2) +
+  geom_density(aes(x= LTO), fill = "orange", alpha = 0.5, adjust = 2) +
+  ggtitle("Turnovers", subtitle = "Blue indicates winning team") +
+  labs(x= "Winning Team Turnovers", y= "") +
+  theme_minimal() +
+  facet_grid(Type ~ Season) +
+  theme(strip.text = element_text(face = "bold"))
+```
+
+
+The losing team also commits more fouls.
+
+```{r}
+joined_reg_tourney %>%
+  filter(Season >= 2014) %>%
+  ggplot() +
+  geom_density(aes(x= WPF), fill = "steelblue", alpha = 0.5, adjust = 2) +
+  geom_density(aes(x= LPF), fill = "orange", alpha = 0.5, adjust = 2) +
+  ggtitle("Personal Fouls", subtitle = "Blue indicates winning team") +
+  labs(x= "Winning Team Personal Fouls", y= "") +
+  theme_minimal() +
+  facet_grid(Type ~ Season) +
+  theme(strip.text = element_text(face = "bold"))
+```
+
+
+
+To be continued...

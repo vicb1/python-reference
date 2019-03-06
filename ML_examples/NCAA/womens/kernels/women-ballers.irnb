@@ -1,0 +1,491 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "_uuid": "d665b54456df8eff195b39dae04e2c9e5996211c"
+   },
+   "source": [
+    "# Women Ballers - Google Cloud & NCAA® ML Competition 2019-Women's\n",
+    "### By Maya Shaked"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "_execution_state": "idle",
+    "_kg_hide-input": false,
+    "_kg_hide-output": true,
+    "_uuid": "c25a4451498eef39eaf76c7c008403991d941a65",
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      "Attaching package: ‘dplyr’\n",
+      "\n",
+      "The following objects are masked from ‘package:stats’:\n",
+      "\n",
+      "    filter, lag\n",
+      "\n",
+      "The following objects are masked from ‘package:base’:\n",
+      "\n",
+      "    intersect, setdiff, setequal, union\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "library(dplyr)\n",
+    "\n",
+    "cities <- read.csv(file = \"../input/wdatafiles/WCities.csv\")\n",
+    "game.cities <- read.csv(file = \"../input/wdatafiles/WGameCities.csv\")\n",
+    "tourney.compact.results <- read.csv(file = \"../input/wdatafiles/WNCAATourneyCompactResults.csv\")\n",
+    "tourney.detailed.results <- read.csv(file = \"../input/wdatafiles/WNCAATourneyDetailedResults.csv\")\n",
+    "tourney.seeds <- read.csv(file = \"../input/wdatafiles/WNCAATourneySeeds.csv\")\n",
+    "tourney.slots <- read.csv(file = \"../input/wdatafiles/WNCAATourneySlots.csv\")\n",
+    "regular.season.compact.results <- read.csv(file = \"../input/wdatafiles/WRegularSeasonCompactResults.csv\")\n",
+    "regular.season.detailed.results <- read.csv(file = \"../input/wdatafiles/WRegularSeasonDetailedResults.csv\")\n",
+    "seasons <- read.csv(file = \"../input/wdatafiles/WSeasons.csv\")\n",
+    "teams <- read.csv(file = \"../input/wdatafiles/WTeams.csv\")\n",
+    "team.spellings <- read.csv(file = \"../input/wdatafiles/WTeamSpellings.csv\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "_uuid": "71455835931288eb63075f218ddeff439b0eae53"
+   },
+   "source": [
+    "# Let's do some data exploration!\n",
+    "\n",
+    "First, I decided to look at the difference between the `cites` and `game.cities` datasets, because their file names are awfully similar."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "_uuid": "61dfe7471a6705e2b07aebe6e29156d314595b0c"
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table>\n",
+       "<thead><tr><th scope=col>CityID</th><th scope=col>City</th><th scope=col>State</th></tr></thead>\n",
+       "<tbody>\n",
+       "\t<tr><td>4001       </td><td>Abilene    </td><td>TX         </td></tr>\n",
+       "\t<tr><td>4002       </td><td>Akron      </td><td>OH         </td></tr>\n",
+       "\t<tr><td>4003       </td><td>Albany     </td><td>NY         </td></tr>\n",
+       "\t<tr><td>4004       </td><td>Albuquerque</td><td>NM         </td></tr>\n",
+       "\t<tr><td>4005       </td><td>Allentown  </td><td>PA         </td></tr>\n",
+       "\t<tr><td>4006       </td><td>Ames       </td><td>IA         </td></tr>\n",
+       "</tbody>\n",
+       "</table>\n"
+      ],
+      "text/latex": [
+       "\\begin{tabular}{r|lll}\n",
+       " CityID & City & State\\\\\n",
+       "\\hline\n",
+       "\t 4001        & Abilene     & TX         \\\\\n",
+       "\t 4002        & Akron       & OH         \\\\\n",
+       "\t 4003        & Albany      & NY         \\\\\n",
+       "\t 4004        & Albuquerque & NM         \\\\\n",
+       "\t 4005        & Allentown   & PA         \\\\\n",
+       "\t 4006        & Ames        & IA         \\\\\n",
+       "\\end{tabular}\n"
+      ],
+      "text/markdown": [
+       "\n",
+       "| CityID | City | State |\n",
+       "|---|---|---|\n",
+       "| 4001        | Abilene     | TX          |\n",
+       "| 4002        | Akron       | OH          |\n",
+       "| 4003        | Albany      | NY          |\n",
+       "| 4004        | Albuquerque | NM          |\n",
+       "| 4005        | Allentown   | PA          |\n",
+       "| 4006        | Ames        | IA          |\n",
+       "\n"
+      ],
+      "text/plain": [
+       "  CityID City        State\n",
+       "1 4001   Abilene     TX   \n",
+       "2 4002   Akron       OH   \n",
+       "3 4003   Albany      NY   \n",
+       "4 4004   Albuquerque NM   \n",
+       "5 4005   Allentown   PA   \n",
+       "6 4006   Ames        IA   "
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "head(cities)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "_uuid": "ecad0bd18ecdc1ed680429b39a8bdaa5185c72a5"
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table>\n",
+       "<thead><tr><th scope=col>Season</th><th scope=col>DayNum</th><th scope=col>WTeamID</th><th scope=col>LTeamID</th><th scope=col>CRType</th><th scope=col>CityID</th></tr></thead>\n",
+       "<tbody>\n",
+       "\t<tr><td>2010   </td><td>11     </td><td>3103   </td><td>3237   </td><td>Regular</td><td>4002   </td></tr>\n",
+       "\t<tr><td>2010   </td><td>11     </td><td>3104   </td><td>3399   </td><td>Regular</td><td>4085   </td></tr>\n",
+       "\t<tr><td>2010   </td><td>11     </td><td>3110   </td><td>3224   </td><td>Regular</td><td>4363   </td></tr>\n",
+       "\t<tr><td>2010   </td><td>11     </td><td>3111   </td><td>3267   </td><td>Regular</td><td>4158   </td></tr>\n",
+       "\t<tr><td>2010   </td><td>11     </td><td>3119   </td><td>3447   </td><td>Regular</td><td>4367   </td></tr>\n",
+       "\t<tr><td>2010   </td><td>11     </td><td>3120   </td><td>3407   </td><td>Regular</td><td>4018   </td></tr>\n",
+       "</tbody>\n",
+       "</table>\n"
+      ],
+      "text/latex": [
+       "\\begin{tabular}{r|llllll}\n",
+       " Season & DayNum & WTeamID & LTeamID & CRType & CityID\\\\\n",
+       "\\hline\n",
+       "\t 2010    & 11      & 3103    & 3237    & Regular & 4002   \\\\\n",
+       "\t 2010    & 11      & 3104    & 3399    & Regular & 4085   \\\\\n",
+       "\t 2010    & 11      & 3110    & 3224    & Regular & 4363   \\\\\n",
+       "\t 2010    & 11      & 3111    & 3267    & Regular & 4158   \\\\\n",
+       "\t 2010    & 11      & 3119    & 3447    & Regular & 4367   \\\\\n",
+       "\t 2010    & 11      & 3120    & 3407    & Regular & 4018   \\\\\n",
+       "\\end{tabular}\n"
+      ],
+      "text/markdown": [
+       "\n",
+       "| Season | DayNum | WTeamID | LTeamID | CRType | CityID |\n",
+       "|---|---|---|---|---|---|\n",
+       "| 2010    | 11      | 3103    | 3237    | Regular | 4002    |\n",
+       "| 2010    | 11      | 3104    | 3399    | Regular | 4085    |\n",
+       "| 2010    | 11      | 3110    | 3224    | Regular | 4363    |\n",
+       "| 2010    | 11      | 3111    | 3267    | Regular | 4158    |\n",
+       "| 2010    | 11      | 3119    | 3447    | Regular | 4367    |\n",
+       "| 2010    | 11      | 3120    | 3407    | Regular | 4018    |\n",
+       "\n"
+      ],
+      "text/plain": [
+       "  Season DayNum WTeamID LTeamID CRType  CityID\n",
+       "1 2010   11     3103    3237    Regular 4002  \n",
+       "2 2010   11     3104    3399    Regular 4085  \n",
+       "3 2010   11     3110    3224    Regular 4363  \n",
+       "4 2010   11     3111    3267    Regular 4158  \n",
+       "5 2010   11     3119    3447    Regular 4367  \n",
+       "6 2010   11     3120    3407    Regular 4018  "
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "head(game.cities)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "_uuid": "6d6e6780590a2a4a390a3b97b5caa42f701030aa"
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table>\n",
+       "<thead><tr><th scope=col>Season</th><th scope=col>DayNum</th><th scope=col>WTeamID</th><th scope=col>WScore</th><th scope=col>LTeamID</th><th scope=col>LScore</th><th scope=col>WLoc</th><th scope=col>NumOT</th></tr></thead>\n",
+       "<tbody>\n",
+       "\t<tr><td>1998</td><td>137 </td><td>3104</td><td>94  </td><td>3422</td><td>46  </td><td>H   </td><td>0   </td></tr>\n",
+       "\t<tr><td>1998</td><td>137 </td><td>3112</td><td>75  </td><td>3365</td><td>63  </td><td>H   </td><td>0   </td></tr>\n",
+       "\t<tr><td>1998</td><td>137 </td><td>3163</td><td>93  </td><td>3193</td><td>52  </td><td>H   </td><td>0   </td></tr>\n",
+       "\t<tr><td>1998</td><td>137 </td><td>3198</td><td>59  </td><td>3266</td><td>45  </td><td>H   </td><td>0   </td></tr>\n",
+       "\t<tr><td>1998</td><td>137 </td><td>3203</td><td>74  </td><td>3208</td><td>72  </td><td>A   </td><td>0   </td></tr>\n",
+       "\t<tr><td>1998</td><td>137 </td><td>3234</td><td>77  </td><td>3269</td><td>59  </td><td>H   </td><td>0   </td></tr>\n",
+       "</tbody>\n",
+       "</table>\n"
+      ],
+      "text/latex": [
+       "\\begin{tabular}{r|llllllll}\n",
+       " Season & DayNum & WTeamID & WScore & LTeamID & LScore & WLoc & NumOT\\\\\n",
+       "\\hline\n",
+       "\t 1998 & 137  & 3104 & 94   & 3422 & 46   & H    & 0   \\\\\n",
+       "\t 1998 & 137  & 3112 & 75   & 3365 & 63   & H    & 0   \\\\\n",
+       "\t 1998 & 137  & 3163 & 93   & 3193 & 52   & H    & 0   \\\\\n",
+       "\t 1998 & 137  & 3198 & 59   & 3266 & 45   & H    & 0   \\\\\n",
+       "\t 1998 & 137  & 3203 & 74   & 3208 & 72   & A    & 0   \\\\\n",
+       "\t 1998 & 137  & 3234 & 77   & 3269 & 59   & H    & 0   \\\\\n",
+       "\\end{tabular}\n"
+      ],
+      "text/markdown": [
+       "\n",
+       "| Season | DayNum | WTeamID | WScore | LTeamID | LScore | WLoc | NumOT |\n",
+       "|---|---|---|---|---|---|---|---|\n",
+       "| 1998 | 137  | 3104 | 94   | 3422 | 46   | H    | 0    |\n",
+       "| 1998 | 137  | 3112 | 75   | 3365 | 63   | H    | 0    |\n",
+       "| 1998 | 137  | 3163 | 93   | 3193 | 52   | H    | 0    |\n",
+       "| 1998 | 137  | 3198 | 59   | 3266 | 45   | H    | 0    |\n",
+       "| 1998 | 137  | 3203 | 74   | 3208 | 72   | A    | 0    |\n",
+       "| 1998 | 137  | 3234 | 77   | 3269 | 59   | H    | 0    |\n",
+       "\n"
+      ],
+      "text/plain": [
+       "  Season DayNum WTeamID WScore LTeamID LScore WLoc NumOT\n",
+       "1 1998   137    3104    94     3422    46     H    0    \n",
+       "2 1998   137    3112    75     3365    63     H    0    \n",
+       "3 1998   137    3163    93     3193    52     H    0    \n",
+       "4 1998   137    3198    59     3266    45     H    0    \n",
+       "5 1998   137    3203    74     3208    72     A    0    \n",
+       "6 1998   137    3234    77     3269    59     H    0    "
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# looks like we can connect these two dataframes by LEFT JOINing on CityID\n",
+    "game.citynames <- left_join(game.cities, cities, by = \"CityID\")\n",
+    "\n",
+    "# now, let's keep examining our data\n",
+    "head(tourney.compact.results)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "_uuid": "870ea8b97c6ac23293c929a3e586d833d9ffdd40"
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table>\n",
+       "<thead><tr><th scope=col>Season</th><th scope=col>Seed</th><th scope=col>TeamID</th></tr></thead>\n",
+       "<tbody>\n",
+       "\t<tr><td>1998</td><td>W01 </td><td>3330</td></tr>\n",
+       "\t<tr><td>1998</td><td>W02 </td><td>3163</td></tr>\n",
+       "\t<tr><td>1998</td><td>W03 </td><td>3112</td></tr>\n",
+       "\t<tr><td>1998</td><td>W04 </td><td>3301</td></tr>\n",
+       "\t<tr><td>1998</td><td>W05 </td><td>3272</td></tr>\n",
+       "\t<tr><td>1998</td><td>W06 </td><td>3438</td></tr>\n",
+       "</tbody>\n",
+       "</table>\n"
+      ],
+      "text/latex": [
+       "\\begin{tabular}{r|lll}\n",
+       " Season & Seed & TeamID\\\\\n",
+       "\\hline\n",
+       "\t 1998 & W01  & 3330\\\\\n",
+       "\t 1998 & W02  & 3163\\\\\n",
+       "\t 1998 & W03  & 3112\\\\\n",
+       "\t 1998 & W04  & 3301\\\\\n",
+       "\t 1998 & W05  & 3272\\\\\n",
+       "\t 1998 & W06  & 3438\\\\\n",
+       "\\end{tabular}\n"
+      ],
+      "text/markdown": [
+       "\n",
+       "| Season | Seed | TeamID |\n",
+       "|---|---|---|\n",
+       "| 1998 | W01  | 3330 |\n",
+       "| 1998 | W02  | 3163 |\n",
+       "| 1998 | W03  | 3112 |\n",
+       "| 1998 | W04  | 3301 |\n",
+       "| 1998 | W05  | 3272 |\n",
+       "| 1998 | W06  | 3438 |\n",
+       "\n"
+      ],
+      "text/plain": [
+       "  Season Seed TeamID\n",
+       "1 1998   W01  3330  \n",
+       "2 1998   W02  3163  \n",
+       "3 1998   W03  3112  \n",
+       "4 1998   W04  3301  \n",
+       "5 1998   W05  3272  \n",
+       "6 1998   W06  3438  "
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "head(tourney.seeds)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "_uuid": "a3d6aabcaf971a1748c8cce97148cda1f5a10103"
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table>\n",
+       "<thead><tr><th scope=col>TeamID</th><th scope=col>TeamName</th></tr></thead>\n",
+       "<tbody>\n",
+       "\t<tr><td>3101       </td><td>Abilene Chr</td></tr>\n",
+       "\t<tr><td>3102       </td><td>Air Force  </td></tr>\n",
+       "\t<tr><td>3103       </td><td>Akron      </td></tr>\n",
+       "\t<tr><td>3104       </td><td>Alabama    </td></tr>\n",
+       "\t<tr><td>3105           </td><td>Alabama A&amp;M</td></tr>\n",
+       "\t<tr><td>3106       </td><td>Alabama St </td></tr>\n",
+       "</tbody>\n",
+       "</table>\n"
+      ],
+      "text/latex": [
+       "\\begin{tabular}{r|ll}\n",
+       " TeamID & TeamName\\\\\n",
+       "\\hline\n",
+       "\t 3101        & Abilene Chr\\\\\n",
+       "\t 3102        & Air Force  \\\\\n",
+       "\t 3103        & Akron      \\\\\n",
+       "\t 3104        & Alabama    \\\\\n",
+       "\t 3105          & Alabama A\\&M\\\\\n",
+       "\t 3106        & Alabama St \\\\\n",
+       "\\end{tabular}\n"
+      ],
+      "text/markdown": [
+       "\n",
+       "| TeamID | TeamName |\n",
+       "|---|---|\n",
+       "| 3101        | Abilene Chr |\n",
+       "| 3102        | Air Force   |\n",
+       "| 3103        | Akron       |\n",
+       "| 3104        | Alabama     |\n",
+       "| 3105        | Alabama A&M |\n",
+       "| 3106        | Alabama St  |\n",
+       "\n"
+      ],
+      "text/plain": [
+       "  TeamID TeamName   \n",
+       "1 3101   Abilene Chr\n",
+       "2 3102   Air Force  \n",
+       "3 3103   Akron      \n",
+       "4 3104   Alabama    \n",
+       "5 3105   Alabama A&M\n",
+       "6 3106   Alabama St "
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# let's clean up those ugly seed names...\n",
+    "tourney.seeds$Seed <- as.numeric(tourney.seeds$Seed[2:3])\n",
+    "\n",
+    "# back to that data examining fun\n",
+    "head(teams)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "_uuid": "8b0c056fe6a58e846a25b47e70ab9db71cbf3acb"
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table>\n",
+       "<thead><tr><th scope=col>TeamNameSpelling</th><th scope=col>TeamID</th></tr></thead>\n",
+       "<tbody>\n",
+       "\t<tr><td><span style=white-space:pre-wrap>a&amp;m-corpus chris  </span></td><td>3394                                                          </td></tr>\n",
+       "\t<tr><td>a&amp;m-corpus christi</td><td>3394                  </td></tr>\n",
+       "\t<tr><td>abilene chr       </td><td>3101              </td></tr>\n",
+       "\t<tr><td>abilene christian </td><td>3101              </td></tr>\n",
+       "\t<tr><td>abilene-christian </td><td>3101              </td></tr>\n",
+       "\t<tr><td>air force         </td><td>3102              </td></tr>\n",
+       "</tbody>\n",
+       "</table>\n"
+      ],
+      "text/latex": [
+       "\\begin{tabular}{r|ll}\n",
+       " TeamNameSpelling & TeamID\\\\\n",
+       "\\hline\n",
+       "\t a\\&m-corpus chris   & 3394                \\\\\n",
+       "\t a\\&m-corpus christi & 3394                \\\\\n",
+       "\t abilene chr        & 3101              \\\\\n",
+       "\t abilene christian  & 3101              \\\\\n",
+       "\t abilene-christian  & 3101              \\\\\n",
+       "\t air force          & 3102              \\\\\n",
+       "\\end{tabular}\n"
+      ],
+      "text/markdown": [
+       "\n",
+       "| TeamNameSpelling | TeamID |\n",
+       "|---|---|\n",
+       "| a&m-corpus chris   | 3394               |\n",
+       "| a&m-corpus christi | 3394               |\n",
+       "| abilene chr        | 3101               |\n",
+       "| abilene christian  | 3101               |\n",
+       "| abilene-christian  | 3101               |\n",
+       "| air force          | 3102               |\n",
+       "\n"
+      ],
+      "text/plain": [
+       "  TeamNameSpelling   TeamID\n",
+       "1 a&m-corpus chris   3394  \n",
+       "2 a&m-corpus christi 3394  \n",
+       "3 abilene chr        3101  \n",
+       "4 abilene christian  3101  \n",
+       "5 abilene-christian  3101  \n",
+       "6 air force          3102  "
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "head(team.spellings)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "_uuid": "fc7664a33e138ef08d749e5fa33e3572be4dbb5d"
+   },
+   "outputs": [],
+   "source": [
+    "# looks like we can connect teams and team.spellings by LEFT JOINing on TeamID\n",
+    "teams.and.spellings <- left_join(teams, team.spellings, by = \"TeamID\")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "R",
+   "language": "R",
+   "name": "ir"
+  },
+  "language_info": {
+   "codemirror_mode": "r",
+   "file_extension": ".r",
+   "mimetype": "text/x-r-source",
+   "name": "R",
+   "pygments_lexer": "r",
+   "version": "3.4.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 1
+}
