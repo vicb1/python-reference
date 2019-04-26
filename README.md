@@ -1,12 +1,12 @@
 # python_reference
 
 #### pip
-`env1/pip freeze > requirements.txt`
+`env1/pip freeze > requirements.txt`<br>
 `env1/pip install -r requirements.txt`
 
 #### conda
-`source activate condaEnv`
-`conda env export > environment.yml`
+`source activate condaEnv`<br>
+`conda env export > environment.yml`<br>
 `conda env create -f environment.yml`
 
 #### ssh connection
@@ -14,10 +14,3 @@
 
 #### Ubuntu Nautilus file connection
 `sftp://vbajenaru3@buffet01.cc.gatech.edu/home/vbajenaru3/`
-
-### other references
-https://github.com/quantopian/qgrid
-
-https://docs.python.org/3/howto/regex.html
-
-https://github.com/koalyptus/TableFilter
