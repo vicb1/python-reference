@@ -1,122 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c975dada-89ff-48f4-b749-1d6ad0de26dd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/.ipynb_checkpoints/0_mess_around-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/.ipynb_checkpoints/1_basic_functions-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/.ipynb_checkpoints/2_algorithms-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/.ipynb_checkpoints/2_regex-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/.ipynb_checkpoints/3_numpy-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/.ipynb_checkpoints/4_pandas-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/.ipynb_checkpoints/5_statistics-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/.ipynb_checkpoints/6_error_handling-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/.ipynb_checkpoints/7_qgrid-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/.ipynb_checkpoints/errors_log-checkpoint.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/0_mess_around.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/1_basic_functions.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/2_algorithms.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/3_regex.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/4_numpy.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/5_pandas.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/6_statistics.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/7_error_handling.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/8_qgrid.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/mens/data/data - Shortcut.lnk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/mens/kernels/a-decade-of-championship-rankings-animated.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/mens/kernels/basic-starter-kernel-ncaa-men-s-dataset-2019.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/mens/kernels/courtside-seat-2019m-competitiveness.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/mens/kernels/embedding-ncaa-model.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/mens/kernels/lgbm-str.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/mens/kernels/ncaa-2k19-eda-zion-s-kingdom.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/mens/kernels/ncaa-men-s-eda-and-models.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/mens/kernels/starter-random-forrest.R" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/mens/kernels/team-power-rankings.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/data/WDataFiles/WCities.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/data/WDataFiles/WGameCities.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/data/WDataFiles/WNCAATourneyCompactResults.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/data/WDataFiles/WNCAATourneyDetailedResults.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/data/WDataFiles/WNCAATourneySeeds.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/data/WDataFiles/WNCAATourneySlots.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/data/WDataFiles/WRegularSeasonCompactResults.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/data/WDataFiles/WRegularSeasonDetailedResults.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/data/WDataFiles/WSeasons.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/data/WDataFiles/WTeamSpellings.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/data/WDataFiles/WTeams.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/data/WSampleSubmissionStage1.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/kernels/a-very-deep-look-at-the-women-s-ncaa.Rmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/kernels/adaboostclassifier.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/kernels/basic-starter-kernel-ncaa-men-s-dataset.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/kernels/basic-starter-kernel-ncaa-women-s-dataset-2019.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/kernels/courtside-seat-2019w-competitiveness.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/kernels/google-cloud-ncaa-ml-competition-2019-women-s.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/kernels/lgbm-str-w.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/kernels/random-forest.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/kernels/simple-eda.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/NCAA/womens/kernels/women-ballers.irnb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/house_prices/data_exploration/input/data_description.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/house_prices/data_exploration/input/sample_submission.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/house_prices/data_exploration/input/test.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/house_prices/data_exploration/input/train.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/house_prices/data_exploration/jupyter/comprehensive-data-exploration-with-python.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/house_prices/working_model/.ipynb_checkpoints/stacked-regressions-top-4-on-leaderboard-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/house_prices/working_model/input/data_description.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/house_prices/working_model/input/sample_submission.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/house_prices/working_model/input/test.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/house_prices/working_model/input/train.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/house_prices/working_model/model/.ipynb_checkpoints/stacked-regressions-top-4-on-leaderboard-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/ML_examples/house_prices/working_model/model/stacked-regressions-top-4-on-leaderboard.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/.ipynb_checkpoints/1_hello-seaborn-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/.ipynb_checkpoints/2_line-charts-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/.ipynb_checkpoints/3_bar-charts-and-heatmaps-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/.ipynb_checkpoints/4_scatter-plots-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/.ipynb_checkpoints/5_distributions-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/.ipynb_checkpoints/6_choosing-plot-types-and-custom-styles-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/.ipynb_checkpoints/hello-seaborn-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/1_hello-seaborn.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/2_line-charts.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/3_bar-charts-and-heatmaps.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/4_scatter-plots.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/5_distributions.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/6_choosing-plot-types-and-custom-styles.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/input/cancer_b.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/input/cancer_m.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/input/candy.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/input/fifa.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/input/flight_delays.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/input/ign_scores.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/input/insurance.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/input/iris.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/input/iris_setosa.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/input/iris_versicolor.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/input/iris_virginica.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/input/museum_visitors.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1_notes/visualization/input/spotify.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/Combinations and Permutations.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/data science 1.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/data science 2.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/general.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/keras.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/linear algebra.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/matplotlib.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/numpy 1.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/numpy 2.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/pandas 1.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/pandas 2.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/pandas 3.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/plotly.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/pyspark 1.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/pyspark 2.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/regular expressions.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/scikit-learn.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2_cheat_sheets/seaborn.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../3_papers/algorithms/Algorithms_in_a_Nutshell.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../3_papers/algorithms/Criteria for Choosing a Sorting Algorithm.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../3_papers/algorithms/algo_trees_terminology.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../3_papers/algorithms/competitive_programmers_handbook.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../3_papers/algorithms/gpu_parallel_sorting.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../3_papers/algorithms/gpu_parallel_sorting_2.pdf" beforeDir="false" />
-    </list>
+    <list default="true" id="c975dada-89ff-48f4-b749-1d6ad0de26dd" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,8 +13,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" selection-start-line="2" selection-end-line="2" />
+            <state relative-caret-position="120">
+              <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
             </state>
           </provider>
         </entry>
@@ -191,6 +76,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
   </component>
   <component name="RunDashboard">
@@ -248,6 +134,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-2" width="1920" height="1031" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24986821" />
@@ -259,7 +146,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3292683" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3991131" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3991131" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -289,8 +176,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        <state relative-caret-position="120">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
     </entry>
