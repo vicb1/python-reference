@@ -2,29 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c975dada-89ff-48f4-b749-1d6ad0de26dd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../.ipynb_checkpoints/basic_functions-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../.ipynb_checkpoints/basic_functions-checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Sorting and Searching/.ipynb_checkpoints/Implementation of Binary Search-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Sorting and Searching/.ipynb_checkpoints/Implementation of Binary Search-checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Sorting and Searching/.ipynb_checkpoints/Implementation of Selection Sort-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Sorting and Searching/.ipynb_checkpoints/Implementation of Selection Sort-checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of Binary Search.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of Binary Search.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of Bubble Sort.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of Bubble Sort.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of Insertion Sort.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of Insertion Sort.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of Merge Sort.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of Merge Sort.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of Quick Sort.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of Quick Sort.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of Selection Sort.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of Selection Sort.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of Shell Sort.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of Shell Sort.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of a Hash Table.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Sorting and Searching/Implementation of a Hash Table.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Sorting and Searching/Sequential Search.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Sorting and Searching/Sequential Search.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Deques Overview.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Deques Overview.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Implementation of Deque.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Implementation of Deque.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Implementation of Queue.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Implementation of Queue.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Implementation of Stack.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Implementation of Stack.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Interview/Interview Questions/.ipynb_checkpoints/Balanced Parentheses Check -checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Interview/Interview Questions/.ipynb_checkpoints/Balanced Parentheses Check -checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Interview/Interview Questions/Balanced Parentheses Check .ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Interview/Interview Questions/Balanced Parentheses Check .ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Interview/Interview Questions/Implement a Deque .ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Interview/Interview Questions/Implement a Deque .ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Interview/Interview Questions/Implement a Queue -Using Two Stacks .ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Interview/Interview Questions/Implement a Queue -Using Two Stacks .ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Interview/Questions -SOLUTIONS/Implement a Queue -Using Two Stacks - SOLUTION.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Stacks, Queues and Deques/Interview/Questions -SOLUTIONS/Implement a Queue -Using Two Stacks - SOLUTION.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../basic_functions.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../basic_functions.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/course_1/Riddles/Interview/Problems - SOLUTIONS/Hallway Lockers -SOLUTION.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Riddles/Interview/Problems - SOLUTIONS/Hallway Lockers -SOLUTION.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/course_1/Riddles/Interview/Problems - SOLUTIONS/Light Switches - SOLUTION.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Riddles/Interview/Problems - SOLUTIONS/Light Switches - SOLUTION.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/course_1/Riddles/Interview/Problems/Hallway Lockers.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Riddles/Interview/Problems/Hallway Lockers.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/course_1/Riddles/Interview/Problems/Jugs of Water .ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Riddles/Interview/Problems/Jugs of Water .ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/course_1/Riddles/Interview/Problems/Light Switches .ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Riddles/Interview/Problems/Light Switches .ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/course_1/Riddles/Interview/Problems/Ropes Burning.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/course_1/Riddles/Interview/Problems/Ropes Burning.ipynb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -37,8 +20,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="13" selection-start-line="13" selection-end-line="13" />
+            <state relative-caret-position="105">
+              <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -158,6 +141,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-2" width="1280" height="1026" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24980111" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -204,8 +188,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        <state relative-caret-position="105">
+          <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
         </state>
       </provider>
     </entry>
