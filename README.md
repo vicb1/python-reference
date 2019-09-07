@@ -14,3 +14,15 @@
 
 #### Ubuntu Nautilus file connection
 `sftp://vbajenaru3@buffet01.cc.gatech.edu/home/vbajenaru3/`
+
+#### To be able to see kernel in jupyter-notebook.  Make sure to restart after these changes:
+
+`pip install --user ipykernel`
+`python -m ipykernel install --user --name=CS6475`
+
+#### To be able to see kernel in jupyter-lab.  Make sure to restart after these changes:
+
+`$ conda activate CS6475`
+`(CS6475)$ conda install ipykernel`
+`(CS6475)$ ipython kernel install --user --name=CS6475_jup_lab`
+`(CS6475($ conda deactivate`
