@@ -17,12 +17,12 @@
 
 #### To be able to see kernel in jupyter-notebook.  Make sure to restart after these changes:
 
-`pip install --user ipykernel`
+`pip install --user ipykernel`<br>
 `python -m ipykernel install --user --name=CS6475`
 
 #### To be able to see kernel in jupyter-lab.  Make sure to restart after these changes:
 
-`$ conda activate CS6475`
-`(CS6475)$ conda install ipykernel`
-`(CS6475)$ ipython kernel install --user --name=CS6475_jup_lab`
+`$ conda activate CS6475`<br>
+`(CS6475)$ conda install ipykernel`<br>
+`(CS6475)$ ipython kernel install --user --name=CS6475_jup_lab`<br>
 `(CS6475($ conda deactivate`
