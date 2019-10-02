@@ -22,7 +22,7 @@
 
 #### To be able to see kernel in jupyter-lab.  Make sure to restart after these changes:
 
-`$ conda activate CS6475`<br>
-`(CS6475)$ conda install ipykernel`<br>
-`(CS6475)$ ipython kernel install --user --name=CS6475_jup_lab`<br>
-`(CS6475($ conda deactivate`
+`source activate CS6475`<br>
+`conda install ipykernel`<br>
+`ipython kernel install --user --name=CS6475_jup_lab`<br>
+`conda deactivate`
