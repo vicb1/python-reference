@@ -28,9 +28,9 @@
 `conda deactivate`
 
 #### Default Anaconda channels
-defaults
-conda-forge
-https://pypi.python.org/
-https://repo.continuum.io/
-https://pypi.python.org/simple
-https://pypi.python.org/pypi
+`defaults`<br>
+`conda-forge`<br>
+`https://pypi.python.org/`<br>
+`https://repo.continuum.io/`<br>
+`https://pypi.python.org/simple`<br>
+`https://pypi.python.org/pypi`<br>
