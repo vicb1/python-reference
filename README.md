@@ -9,6 +9,9 @@
 `conda env export > environment.yml`<br>
 `conda env create -f environment.yml`
 
+#### find location of conda environment
+`where python` or `which python`
+
 #### Ubuntu terminal ssh connection
 `ssh -X vbajenaru3@buffet01.cc.gatech.edu`
 
