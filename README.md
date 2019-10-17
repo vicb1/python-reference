@@ -26,3 +26,11 @@
 `conda install ipykernel`<br>
 `ipython kernel install --user --name=CS6475_jup_lab`<br>
 `conda deactivate`
+
+#### Default Anaconda channels
+defaults
+conda-forge
+https://pypi.python.org/
+https://repo.continuum.io/
+https://pypi.python.org/simple
+https://pypi.python.org/pypi
