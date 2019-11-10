@@ -37,3 +37,14 @@
 `https://repo.continuum.io/`<br>
 `https://pypi.python.org/simple`<br>
 `https://pypi.python.org/pypi`<br>
+
+#### check current python environment information
+`import platform`<br>
+`print('architecture:', platform.architecture())`<br>
+`print('python_version:', platform.python_version())`<br>
+
+#### install package with setup.py
+`pip install .`
+
+#### install .whl package
+`pip install test.whl`
