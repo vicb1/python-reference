@@ -42,6 +42,11 @@
 `import platform`<br>
 `print('architecture:', platform.architecture())`<br>
 `print('python_version:', platform.python_version())`<br>
+` `<br>
+`import wheel.pep425tags`<br>
+`import pprint`<br>
+`print('-wheel.pep425tags.get_supported:')`<br>
+`pprint.pprint(wheel.pep425tags.get_supported())`<br>
 
 #### install package with setup.py
 `pip install .`
