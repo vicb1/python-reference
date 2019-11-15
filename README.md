@@ -10,15 +10,15 @@
 `env1/pip install -r requirements.txt`
 
 #### To be able to see kernel in jupyter-lab.  Make sure to restart jupyter-lab after these changes:
-`source activate CS6475`<br>
+`source activate environment1`<br>
 `conda install ipykernel`<br>
-`ipython kernel install --user --name=CS6475_jup_lab`<br>
+`ipython kernel install --user --name=environment1_jup`<br>
 `conda deactivate`
 
 #### To be able to see kernel in jupyter-notebook.  Make sure to restart jupyter-notebook after these changes:
-
+`source activate environment1`<br>
 `pip install --user ipykernel`<br>
-`python -m ipykernel install --user --name=CS6475`
+`python -m ipykernel install --user --name=environment1_jup`
 
 #### find location of conda environment
 `where python` or `which python`
@@ -28,9 +28,6 @@
 
 #### Ubuntu Nautilus file connection
 `sftp://vbajenaru3@buffet01.cc.gatech.edu/home/vbajenaru3/`
-
-
-
 
 #### Default Anaconda channels
 `defaults`<br>
