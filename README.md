@@ -52,3 +52,6 @@
 
 #### install .whl package
 `pip install test.whl`
+
+#### install package from Git repository
+`pip install -e git+https://github.com/hiive/hiivemdptoolbox#egg=hiive.mdptoolbox`
