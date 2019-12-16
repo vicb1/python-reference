@@ -6,29 +6,35 @@ import sys
 
 
 # Complete the steadyGene function below.
+from collections import Counter
+
+def valid_genes_amt(max_gene_freq, curr_gene_amts):
+        ret = True
+        for key, val in curr_gene_amts.items():
+                if val > max_gene_freq:
+                        ret = False
+                        break
+        return ret
+
+# Complete the steadyGene function below.
 def steadyGene(gene):
-    dic = {'A': 0, 'T': 0, 'C': 0, 'G': 0}
-    for i in gene:
-        dic[i] += 1
-    gene_len = len(gene)
-    factor = gene_len / 4
+        full_genes_len = len(gene)
+        max_gene_freq = full_genes_len/4
+        curr_gene_amts = Counter(gene)
 
-    if dic['A'] == factor and dic['T'] == factor and dic['C'] == factor and dic['G'] == factor:
-        return 0
+        min_ans = 10**9
+        right = 0
+        left = 0
+        while right < full_genes_len and left < full_genes_len:
+                if not valid_genes_amt(max_gene_freq, curr_gene_amts):
+                        curr_gene_amts[gene[right]] -= 1
+                        right += 1
+                else:
+                        min_ans = min(min_ans,  right - left)
+                        curr_gene_amts[gene[left]] += 1
+                        left += 1
 
-    upper = 0
-    lower = 0
-    minlen = gene_len
-    while upper < gene_len and lower < gene_len:
-        while (dic['A'] > factor or dic['C'] > factor or dic['T'] > factor or dic['G'] > factor) and upper < gene_len:
-            dic[gene[upper]] -= 1
-            upper += 1
-        while dic['A'] <= factor and dic['C'] <= factor and dic['T'] <= factor and dic['G'] <= factor:
-            dic[gene[lower]] += 1
-            lower += 1
-        if upper - lower < minlen:
-            minlen = upper - lower + 1
-    return minlen
+        return min_ans
 
 g = 'GAAATAAA'
 # g = 'TGATGCCGTCCCCTCAACTTGAGTGCTCCTAATGCGTTGC'
