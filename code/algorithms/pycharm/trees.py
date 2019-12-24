@@ -90,19 +90,4 @@ def sortedArrayToBST2(nums):
 
 a = sortedArrayToBST2([-10,-3,0,5,9])
 
-h
-
-
->>> sl *= 10_000_000
->>> sl.count('c')
-10000000
->>> sl[-3:]
-['e', 'e', 'e']
-
-SortedDict({'a': 1, 'b': 2, 'c': 3})
->>>
-('c', 3)
->>> 
->>> ss
-SortedSet(['a', 'b', 'c', 'd', 'r'])
->>> ss.bisect_left('c')
+print('sdf')
