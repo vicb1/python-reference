@@ -16,9 +16,9 @@
 `conda deactivate`
 
 #### To be able to see kernel in jupyter-notebook.  Make sure to restart jupyter-notebook after these changes:
-`source activate environment1`<br>
+`source activate env1`<br>
 `pip install --user ipykernel`<br>
-`python -m ipykernel install --user --name=environment1_jup`
+`python -m ipykernel install --user --name=env1`
 
 #### find location of conda environment
 `where python` or `which python`
