@@ -10,9 +10,9 @@
 `env1/pip install -r requirements.txt`
 
 #### To be able to see kernel in jupyter-lab.  Make sure to restart jupyter-lab after these changes:
-`source activate environment1`<br>
+`source activate env1`<br>
 `conda install ipykernel`<br>
-`ipython kernel install --user --name=environment1_jup`<br>
+`ipython kernel install --user --name=env1`<br>
 `conda deactivate`
 
 #### To be able to see kernel in jupyter-notebook.  Make sure to restart jupyter-notebook after these changes:
