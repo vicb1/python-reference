@@ -11,3 +11,16 @@ Traceback (most recent call last):
     variable = error_variable  # will error out
 NameError: name 'error_variable' is not defined
 DEBUG:root:Finished run, time: 2019-12-21 11:46:15.611182
+DEBUG:root:Started run, time: 2020-01-04 13:34:21.262128
+INFO:root:this is an info message
+ERROR:root:test error message
+DEBUG:root:This is a debug message
+WARNING:root:tbllalfhldfhd, warning.
+ERROR:root:Got exception on main handler, time
+NoneType: None
+ERROR:root:Got exception on main handler, time: 2020-01-04 13:34:21.264721
+Traceback (most recent call last):
+  File "<ipython-input-1-00948f971c01>", line 16, in <module>
+    variable = error_variable  # will error out
+NameError: name 'error_variable' is not defined
+DEBUG:root:Finished run, time: 2020-01-04 13:34:21.264925
