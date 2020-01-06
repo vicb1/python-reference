@@ -1,0 +1,22 @@
+def gardenNoAdj(N, paths):
+    nodes = [[] for _ in range(N)]
+    for a, b in paths:
+        nodes[a - 1].append(b - 1)
+        nodes[b - 1].append(a - 1)
+
+    types = [-1] * N
+    type_options = {1, 2, 3, 4}
+
+    for i in range(N):
+        not_valid = {types[x] for x in nodes[i]}
+        types[i] = (type_options - not_valid).pop()
+
+    return types
+# N = 3
+# paths = [[1,2],[2,3],[3,1]]
+N = 4
+paths = [[1,2],[2,3],[3,4],[4,1],[1,3],[2,4]]
+# N = 4
+# paths = [[1,2],[3,4]]
+a = gardenNoAdj(N, paths)
+print(a)
