@@ -49,3 +49,6 @@
 
 #### install package from Git repository
 `pip install -e git+https://github.com/hiive/hiivemdptoolbox#egg=hiive.mdptoolbox`
+
+#### Tensorboard startup
+`tensorboard --logdir logs`
