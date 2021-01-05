@@ -58,3 +58,6 @@ https://github.com/jupyterlab/jupyterlab/blob/master/docs/source/user/debugger.r
 
 #### Postgres terminate connections
 `select pg_terminate_backend(pid) from pg_stat_activity where datname='db';`
+
+#### python graph speedup
+https://git.skewed.de/count0/graph-tool
