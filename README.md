@@ -61,3 +61,6 @@ https://github.com/jupyterlab/jupyterlab/blob/master/docs/source/user/debugger.r
 
 #### python graph speedup
 https://git.skewed.de/count0/graph-tool
+
+#### install tensorflow with gpu
+https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
