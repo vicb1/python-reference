@@ -20,6 +20,9 @@
 `pip install --user ipykernel`<br>
 `python -m ipykernel install --user --name=env1`
 
+#### Debug in JupyterLab
+https://github.com/jupyterlab/jupyterlab/blob/master/docs/source/user/debugger.rst
+
 #### find location of conda environment
 `where python` or `which python`
 
