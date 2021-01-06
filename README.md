@@ -23,6 +23,18 @@
 #### Debug in JupyterLab
 https://github.com/jupyterlab/jupyterlab/blob/master/docs/source/user/debugger.rst
 
+#### JupyterLab restart kernel and run all shortcut
+```
+{"shortcuts": [
+    {
+        "command": "runmenu:restart-and-run-all",
+        "keys": ["Ctrl Shift Enter"],
+        "selector": "[data-jp-code-runner]"
+    }
+              ]
+}
+```
+
 #### find location of conda environment
 `where python` or `which python`
 
