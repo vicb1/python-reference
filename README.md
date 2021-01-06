@@ -64,3 +64,6 @@ https://git.skewed.de/count0/graph-tool
 
 #### install tensorflow with gpu
 https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
+
+#### limit memory usage tensorflow
+https://github.com/tensorflow/tensorflow/issues/25138
