@@ -1,22 +1,30 @@
 # python-reference
 
-#### list conda envs
-`(conda env list | grep '^\w' | cut -d' ' -f1)`
 
 #### package backup with conda
 `source activate condaEnv`<br>
 `conda env export > environment.yml` OR `!conda env export --name condaEnv`<br>
 `conda env create --file environment.yml --name environment1`
 
+#### Create new env and install libraries for jupyter-lab.  Make sure to restart jupyter-lab after these changes:
+`conda create -n kaggle8 python=3.7.6`<br> 
+`conda activate kaggle8`<br>
+`conda install ipykernel`<br>
+`ipython kernel install --user --name=kaggle8`<br>
+
+#### install tensorflow with gpu
+https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
+`pip3 install pandas`<br>
+`pip3 install keras-tuner`<br>
+`pip3 install tqdm`<br>
+`pip3 install tensorflow-gpu==2.2.0`<br>
+
+#### list conda envs
+`(conda env list | grep '^\w' | cut -d' ' -f1)`
+
 #### package backup with pip
 `env1/pip freeze > requirements.txt`<br>
 `env1/pip install -r requirements.txt`
-
-#### Create new env and install libraries for jupyter-lab.  Make sure to restart jupyter-lab after these changes:
-`conda create -n kaggle7 python=3.7.6`<br> 
-`source activate kaggle7`<br>
-`conda install ipykernel`<br>
-`ipython kernel install --user --name=kaggle7`<br>
 
 #### To be able to see kernel in jupyter-notebook.  Make sure to restart jupyter-notebook after these changes:
 `source activate env1`<br>
@@ -76,9 +84,6 @@ https://jupyterlab.readthedocs.io/en/stable/user/debugger.html
 
 #### python graph speedup
 https://git.skewed.de/count0/graph-tool
-
-#### install tensorflow with gpu
-https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
 
 #### limit memory usage tensorflow
 https://github.com/tensorflow/tensorflow/issues/25138
