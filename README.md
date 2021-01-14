@@ -10,7 +10,7 @@
 `env1/pip install -r requirements.txt`
 
 #### Create new env and install libraries for jupyter-lab.  Make sure to restart jupyter-lab after these changes:
-`conda create -n kaggle3 python=3.8.5 anaconda`<br>
+`conda create -n kaggle3 python=3.8.5`<br> 
 `source activate kaggle3`<br>
 `conda install ipykernel`<br>
 `ipython kernel install --user --name=kaggle3`<br>
