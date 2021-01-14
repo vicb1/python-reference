@@ -21,7 +21,7 @@
 `python -m ipykernel install --user --name=env1`
 
 #### Debug in JupyterLab
-https://github.com/jupyterlab/jupyterlab/blob/master/docs/source/user/debugger.rst
+https://jupyterlab.readthedocs.io/en/stable/user/debugger.html
 
 #### JupyterLab restart kernel and run all shortcut
 ```
