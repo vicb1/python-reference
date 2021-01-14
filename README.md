@@ -1,8 +1,11 @@
 # python-reference
 
+#### list conda envs
+`(conda env list | grep '^\w' | cut -d' ' -f1)`
+
 #### package backup with conda
 `source activate condaEnv`<br>
-`conda env export > environment.yml`<br>
+`conda env export > environment.yml` OR `!conda env export --name condaEnv`<br>
 `conda env create --file environment.yml --name environment1`
 
 #### package backup with pip
