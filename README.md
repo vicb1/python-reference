@@ -7,7 +7,7 @@
 `conda env create --file environment.yml --name environment1`
 
 #### Create new env and install libraries for jupyter-lab.  Make sure to restart jupyter-lab after these changes:
-`conda create -n kaggle13 python=3.8.5` OR `3.7.6` for kaggle <br>
+`conda create -n kaggle13 python=3.7.6` (for Kaggle) OR `3.8.5` for latest <br>
 `conda activate kaggle13`<br>
 `conda install ipykernel`<br>
 `ipython kernel install --user --name=kaggle13`<br>
