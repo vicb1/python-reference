@@ -13,7 +13,7 @@
 `ipython kernel install --user --name=kaggle8`<br>
 
 #### install tensorflow with gpu
-https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
+https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04 <br>
 `pip3 install pandas`<br>
 `pip3 install keras-tuner`<br>
 `pip3 install tqdm`<br>
