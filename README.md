@@ -79,3 +79,6 @@ https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubunt
 
 #### limit memory usage tensorflow
 https://github.com/tensorflow/tensorflow/issues/25138
+
+#### install anaconda navigator
+https://docs.anaconda.com/anaconda/install/linux/
