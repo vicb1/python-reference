@@ -7,8 +7,9 @@
 `conda env create --file environment.yml --name environment1`
 
 #### Create new env and install libraries for jupyter-lab.  Make sure to restart jupyter-lab after these changes:
-`conda create -n kaggle12 python=3.8.5`<br> OR `3.7.6` for kaggle <br>
-`conda activate kaggle12 && \ conda install ipykernel`<br>
+`conda create -n kaggle12 python=3.8.5` OR `3.7.6` for kaggle <br>
+`conda activate kaggle12`<br>
+`conda install ipykernel`<br>
 `ipython kernel install --user --name=kaggle12`<br>
 
 #### install tensorflow with gpu
