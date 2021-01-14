@@ -13,10 +13,10 @@
 `env1/pip install -r requirements.txt`
 
 #### Create new env and install libraries for jupyter-lab.  Make sure to restart jupyter-lab after these changes:
-`conda create -n kaggle5 python=3.8.5`<br> 
-`source activate kaggle5`<br>
+`conda create -n kaggle7 python=3.7.6`<br> 
+`source activate kaggle7`<br>
 `conda install ipykernel`<br>
-`ipython kernel install --user --name=kaggle5`<br>
+`ipython kernel install --user --name=kaggle7`<br>
 
 #### To be able to see kernel in jupyter-notebook.  Make sure to restart jupyter-notebook after these changes:
 `source activate env1`<br>
