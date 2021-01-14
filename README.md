@@ -19,6 +19,8 @@ https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubunt
 `pip3 install keras-tuner`<br>
 `pip3 install pandas`<br>
 - shut down all other kernels
+https://github.com/Kaggle/docker-python/blob/master/Dockerfile
+https://github.com/Kaggle/docker-python/blob/master/gpu.Dockerfile
 
 #### list conda envs
 `(conda env list | grep '^\w' | cut -d' ' -f1)`
