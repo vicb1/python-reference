@@ -18,6 +18,7 @@ https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubunt
 `sudo pip3 install tensorflow-gpu==2.2.0 --user --ignore-installed` OR `conda install tensorflow-gpu`<br>
 `pip3 install keras-tuner`<br>
 `pip3 install pandas`<br>
+- shut down all other kernels
 
 #### list conda envs
 `(conda env list | grep '^\w' | cut -d' ' -f1)`
