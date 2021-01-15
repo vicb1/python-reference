@@ -20,10 +20,9 @@ source activate kaggle_gpu3
 conda install ipykernel
 ipython kernel install --user --name=kaggle_gpu3
 conda install tensorflow-gpu=2.1
-pip install tensorflow-gpu==2.3.1
-pip install tensorflow-gpu==2.3.1
 pip install pandas
-pip install keras-tuner
+pip install keras-tuner 
+pip uninstall gast scipy tensorboard tensorflow-estimator
 pip install tensorflow-gpu==2.3.1
 
 ```
