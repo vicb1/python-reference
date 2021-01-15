@@ -18,7 +18,8 @@ https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubunt
 `conda install tensorflow-gpu` (for 2.4, Kaggle) OR `sudo pip3 install tensorflow-gpu==2.2.0 --user --ignore-installed` <br> 
 `pip install keras-tuner`<br>
 `pip install pandas`<br>
-- shut down all other instances of this kernel, or else tensorflow will error <br>
+- shut down all other instances of this kernel, or else tensorflow will error 
+- kaggle install: <br>
 https://github.com/Kaggle/docker-python/blob/master/Dockerfile <br>
 https://github.com/Kaggle/docker-python/blob/master/gpu.Dockerfile <br>
 
