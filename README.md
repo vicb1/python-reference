@@ -26,6 +26,28 @@ pip uninstall gast scipy tensorboard tensorflow-estimator
 pip install tensorflow-gpu==2.3.1
 
 ```
+try 3:
+https://www.tensorflow.org/install/source#gpu
+need cuda 11, cudnn 8, tensorflow 2.4
+
+sudo apt-get purge *nvidia*
+sudo apt autoremove
+sudo apt-get update
+sudo apt install nvidia-driver-455
+*restart*
+
+nvidia-smi
+sudo apt install nvidia-cuda-toolkit
+
+https://askubuntu.com/questions/1288672/how-do-you-install-cuda-11-on-ubuntu-20-10-and-verify-the-installation
+
+
+https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
+https://developer.nvidia.com/compute/machine-learning/cudnn/secure/8.0.5/11.1_20201106/cudnn-11.1-linux-x64-v8.0.5.39.tgz
+
+
+```
+```
 
 #### install tensorflow with gpu
 https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04 <br>
