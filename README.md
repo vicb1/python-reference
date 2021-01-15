@@ -50,8 +50,18 @@ ipython kernel install --user --name=kaggle_gpu4
 conda install tensorflow-gpu=2.1
 pip install pandas
 pip install keras-tuner 
-pip uninstall gast scipy tensorboard tensorflow-estimator
-pip install tensorflow-gpu==2.3.1
+pip uninstall tensorflow
+pip install tensorflow-gpu==2.4.0
+```
+try 2:
+```
+conda create -n kaggle_gpu5 python=3.7.6 
+source activate kaggle_gpu5
+conda install ipykernel
+ipython kernel install --user --name=kaggle_gpu5
+pip install pandas
+pip install keras-tuner 
+pip install tensorflow-gpu
 ```
 *shut down all other instances of this kernel, or else tensorflow will error *
 
