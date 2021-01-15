@@ -43,10 +43,10 @@ https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubunt
 https://stackoverflow.com/questions/65273118/why-is-tensorflow-not-recognizing-my-gpu-after-conda-install
 
 ```
-conda create -n kaggle_gpu3 python=3.7.6 
-source activate kaggle_gpu3
+conda create -n kaggle_gpu4 python=3.7.6 
+source activate kaggle_gpu4
 conda install ipykernel
-ipython kernel install --user --name=kaggle_gpu3
+ipython kernel install --user --name=kaggle_gpu4
 conda install tensorflow-gpu=2.1
 pip install pandas
 pip install keras-tuner 
