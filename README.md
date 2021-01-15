@@ -8,9 +8,24 @@
 
 #### Create new env and install libraries for jupyter-lab.  Make sure to restart jupyter-lab after these changes:
 `conda create -n kaggle13 python=3.7.6` (for Kaggle) OR `3.8.5` for latest <br>
-`conda activate kaggle13`<br>
+`source activate kaggle13`<br>
 `conda install ipykernel`<br>
 `ipython kernel install --user --name=kaggle13`<br>
+
+try 2:
+```
+conda create -n kaggle_gpu3 python=3.7.6 
+source activate kaggle_gpu3
+conda install ipykernel
+ipython kernel install --user --name=kaggle_gpu3
+conda install tensorflow-gpu=2.1
+pip install tensorflow-gpu==2.3.1
+pip install tensorflow-gpu==2.3.1
+pip install pandas
+pip install keras-tuner
+pip install tensorflow-gpu==2.3.1
+
+```
 
 #### install tensorflow with gpu
 https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04 <br>
