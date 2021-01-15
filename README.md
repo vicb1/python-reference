@@ -70,6 +70,36 @@ Process finished with exit code 132 (interrupted by signal 4: SIGILL)
 
 pip install --user --force-reinstall --ignore-installed --no-binary :all: tensorflow-gpu
 
+#### install cuda 10.2.89, cudnn 7.6.5.32, and tensorflow 2.4, to match kaggle
+
+https://forums.developer.nvidia.com/t/installing-cuda-10-2-on-ubuntu-18-04-3/107773
+https://askubuntu.com/questions/1260039/how-to-install-specific-nvidia-driver-like-nvidia-driver-440-440-33-01-deb
+```
+sudo apt-get purge *nvidia*
+sudo apt autoremove
+sudo add-apt-repository ppa:graphics-drivers/ppa -y 
+sudo apt update -y 
+sudo apt-get update
+sudo apt install nvidia-driver-440 -y 
+*restart*
+ nvidia-smi
+sudo apt install nvidia-cuda-toolkit
+nano ~/.bashrc
+echo 'export CUDA_PATH=/usr' >> ~/.bashrc
+nano ~/.bashrc
+source ~/.bashrc
+```
+
+Using cudnn:
+https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.2_20191118/cudnn-10.2-linux-x64-v7.6.5.32.tgz
+
+```
+sudo rm -rf /usr/lib/cuda
+```
+Install cudnn per:
+https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
+
+https://stackoverflow.com/questions/65273118/why-is-tensorflow-not-recognizing-my-gpu-after-conda-install
 
 #### install tensorflow with gpu (old version)
 https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04 <br>
