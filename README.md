@@ -13,6 +13,7 @@
 `ipython kernel install --user --name=kaggle13`<br>
 
 try 2:
+https://stackoverflow.com/questions/65273118/why-is-tensorflow-not-recognizing-my-gpu-after-conda-install
 ```
 conda create -n kaggle_gpu3 python=3.7.6 
 source activate kaggle_gpu3
