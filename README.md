@@ -65,6 +65,10 @@ pip install tensorflow-gpu
 ```
 *shut down all other instances of this kernel, or else tensorflow will error *
 
+- error maybe gcc or bazel need updating?
+Process finished with exit code 132 (interrupted by signal 4: SIGILL)
+
+
 #### install tensorflow with gpu (old version)
 https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04 <br>
 `sudo apt install python3-testresources`<br>
