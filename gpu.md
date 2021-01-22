@@ -5,6 +5,7 @@ and: https://askubuntu.com/questions/1260039/how-to-install-specific-nvidia-driv
 ```
 sudo apt-get purge *nvidia*
 sudo apt autoremove
+sudo rm -rf /usr/lib/cuda  # to remove previous cudnn files
 sudo add-apt-repository ppa:graphics-drivers/ppa -y 
 sudo apt update -y 
 sudo apt-get update
@@ -24,9 +25,6 @@ source ~/.bashrc
 Using cudnn:
 https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.2_20191118/cudnn-10.2-linux-x64-v7.6.5.32.tgz
 
-```
-sudo rm -rf /usr/lib/cuda
-```
 Install cudnn per:
 https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
 
@@ -76,10 +74,10 @@ pip install tensorflow-gpu==2.4.0
 ```
 try 2:
 ```
-conda create -n kaggle_gpu5 python=3.7.6 
-source activate kaggle_gpu5
+conda create -n kaggle_gpu6 python=3.7.6 
+source activate kaggle_gpu6
 conda install ipykernel
-ipython kernel install --user --name=kaggle_gpu5
+ipython kernel install --user --name=kaggle_gpu6
 pip install pandas
 pip install keras-tuner 
 pip install tensorflow-gpu
