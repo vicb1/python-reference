@@ -1,3 +1,7 @@
+#### through docker
+1. set up https://github.com/Kaggle/docker-python
+1. run through pycharm: https://www.jetbrains.com/help/pycharm/using-docker-as-a-remote-interpreter.html#prereq
+
 
 #### install cuda 10.2.89, cudnn 7.6.5.32, and tensorflow 2.4, to match kaggle
 
