@@ -1,3 +1,11 @@
+install anaconda:
+```
+sudo bash ./Downloads/Anaconda3-2020.11-Linux-x86_64.sh
+echo 'export PATH=~/anaconda3/bin:$PATH' >> ~/.bashrc
+nano ~/.bashrc
+source ~/.bashrc
+```
+
 #### install cuda 10.2.89, cudnn 7.6.5.32, and tensorflow 2.4, Ubuntu 18.04 to match kaggle
 (kaggle env: https://github.com/Kaggle/docker-python)
 
