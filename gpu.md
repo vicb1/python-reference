@@ -29,14 +29,16 @@ nano ~/.bashrc
 source ~/.bashrc
 ```
 
-running "dmesg" gets error ` NVRM: API mismatch: the client has the version 450.102.04, but
+running `dmesg` gets error ` NVRM: API mismatch: the client has the version 450.102.04, but
                NVRM: this kernel module has the version 440.82.  Please
                NVRM: make sure that this kernel module and all NVIDIA driver
                NVRM: components have the same version.
 `
+
 so check for same version:
 https://developer.nvidia.com/cuda-toolkit-archive
 
+and run:
 ```
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin
 sudo mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600
@@ -46,6 +48,8 @@ sudo apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub
 sudo apt-get update
 sudo apt-get -y install cuda
 ```
+
+if `nvidia-smi` still not working, redo: https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux
 
 Using cudnn:
 https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.2_20191118/cudnn-10.2-linux-x64-v7.6.5.32.tgz
