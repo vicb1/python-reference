@@ -1,6 +1,3 @@
-per: https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux
-
-https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
 
 #### install cuda 10.2.89, cudnn 7.6.5.32, and tensorflow 2.4, to match kaggle
 
@@ -14,9 +11,15 @@ sudo add-apt-repository ppa:graphics-drivers/ppa -y
 sudo apt update -y 
 sudo apt-get update
 sudo apt install nvidia-driver-440 -y 
+*change to appropriate driver in program Software & updates*
 *restart*
-*change to driver-440 in program Software & updates*
-*restart*
+nvidia-smi
+```
+if this doesn't provide the driver you want, do this instead:
+- download desired compatible driver: https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
+- install manually: https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux
+
+```
 sudo apt install nvidia-cuda-toolkit
 *restart*
 nvidia-smi
