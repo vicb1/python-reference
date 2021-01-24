@@ -1,3 +1,5 @@
+per: https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux
+
 #### install cuda 10.2.89, cudnn 7.6.5.32, and tensorflow 2.4, to match kaggle
 
 per: https://forums.developer.nvidia.com/t/installing-cuda-10-2-on-ubuntu-18-04-3/107773
