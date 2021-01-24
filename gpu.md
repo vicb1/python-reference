@@ -35,8 +35,16 @@ https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Prod
 Install cudnn per:
 https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
 
-https://stackoverflow.com/questions/65273118/why-is-tensorflow-not-recognizing-my-gpu-after-conda-install
-
+```
+conda create -n kaggle1 python=3.7.6 
+source activate kaggle1
+conda install ipykernel
+ipython kernel install --user --name=kaggle1
+pip install pandas
+pip install keras-tuner 
+pip install tensorflow-gpu
+*shut down all other instances of this kernel, or else tensorflow will error *
+```
 
 ### install cuda 11, cudnn 8, tensorflow 2.4
 https://www.tensorflow.org/install/source#gpu
