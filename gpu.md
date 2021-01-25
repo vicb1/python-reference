@@ -33,8 +33,6 @@ source ~/.bashrc
 Using cudnn download https://developer.nvidia.com/rdp/cudnn-download specifically:
 https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.2_20191118/cudnn-10.2-linux-x64-v7.6.5.32.tgz
 
-Install cudnn per:
-https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
 
 ```
 sudo cp cuda/include/cudnn.h /usr/local/cuda-10.2/include/
@@ -45,7 +43,9 @@ echo 'export LD_LIBRARY_PATH=/usr/local/cuda-10.2/include:$LD_LIBRARY_PATH' >> ~
 source ~/.bashrc 
 ```
 
-Alternate install: https://stackoverflow.com/questions/55224016/importerror-libcublas-so-10-0-cannot-open-shared-object-file-no-such-file-or
+Alternate installs: 
+- https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
+- https://stackoverflow.com/questions/55224016/importerror-libcublas-so-10-0-cannot-open-shared-object-file-no-such-file-or
 
 ```
 conda create -n kaggle1 python=3.7.6
