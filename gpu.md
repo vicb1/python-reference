@@ -3,6 +3,7 @@ install anaconda:
 sudo bash ./Anaconda3-2020.11-Linux-x86_64.sh
 echo 'export PATH=~/anaconda3/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
+sudo chown -R $USER:$USER anaconda3
 ```
 
 #### v2 install cuda 10.2.89, cudnn 7.6.5.32, and tensorflow 2.4, Ubuntu 18.04 to match kaggle
