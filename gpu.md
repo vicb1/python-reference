@@ -6,6 +6,56 @@ nano ~/.bashrc
 source ~/.bashrc
 ```
 
+#### v2 install cuda 10.2.89, cudnn 7.6.5.32, and tensorflow 2.4, Ubuntu 18.04 to match kaggle
+(kaggle env: https://github.com/Kaggle/docker-python)
+
+(tensorflow compatabilities: https://www.tensorflow.org/install/source#gpu)
+
+- download desired compatible driver: https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
+- install manually: https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux
+- ensure working with `nvidia-smi`
+- ensure working with `nvcc --version` and `whereis cuda` ?
+- install cudnn and see if works?
+- check for same version: https://developer.nvidia.com/cuda-toolkit-archive and run:
+```
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin
+sudo mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget https://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb
+sudo apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub
+sudo apt-get update
+sudo apt-get -y install cuda
+```
+- ensure working with `nvcc --version` and `whereis cuda`
+
+Using cudnn:
+https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.2_20191118/cudnn-10.2-linux-x64-v7.6.5.32.tgz
+
+Install cudnn per:
+https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
+
+If this doesn't work, look for cuda folder such as: `/usr/local/cuda-10.2`
+```
+sudo cp cuda/include/cudnn.h /usr/local/cuda-10.2/include/
+sudo cp cuda/lib64/libcudnn* /usr/local/cuda-10.2/lib64/
+sudo chmod a+r /usr/local/cuda-10.2/include/cudnn.h /usr/local/cuda-10.2/lib64/libcudnn*
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-10.2/include:$LD_LIBRARY_PATH' >> ~/.bashrc  
+source ~/.bashrc 
+```
+
+```
+conda create -n kaggle1 python=3.7.6
+source activate kaggle1
+conda install ipykernel
+ipython kernel install --user --name=kaggle1
+pip install pandas
+pip install keras-tuner 
+pip install tensorflow-gpu
+*shut down all other instances of this kernel, or else tensorflow will error *
+```
+
+
 #### install cuda 10.2.89, cudnn 7.6.5.32, and tensorflow 2.4, Ubuntu 18.04 to match kaggle
 (kaggle env: https://github.com/Kaggle/docker-python)
 
@@ -67,8 +117,20 @@ https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Prod
 Install cudnn per:
 https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
 
+If this doesn't work, look for cuda folder such as: `/usr/local/cuda-10.2`
 ```
-conda create -n kaggle1 python=3.7.6 
+sudo cp cuda/include/cudnn.h /usr/local/cuda-10.2/include/
+sudo cp cuda/lib64/libcudnn* /usr/local/cuda-10.2/lib64/
+sudo chmod a+r /usr/local/cuda-10.2/include/cudnn.h /usr/local/cuda-10.2/lib64/libcudnn*
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-10.2/include:$LD_LIBRARY_PATH' >> ~/.bashrc  
+source ~/.bashrc 
+```
+
+
+
+```
+conda create -n kaggle1 python=3.7.6
 source activate kaggle1
 conda install ipykernel
 ipython kernel install --user --name=kaggle1
