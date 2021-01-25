@@ -51,18 +51,33 @@ Alternate installs:
 ```
 conda create -n kaggle1 python=3.7.6
 source activate kaggle1
-conda install ipykernel
-ipython kernel install --user --name=kaggle1
-pip install pandas
-pip install keras-tuner 
 pip install tensorflow-gpu
-*shut down all other instances of this kernel, or else tensorflow will error *
+echo $CONDA_PREFIX # to see env location
 ```
 
 to appease warnings from running `pip install tensorflow-gpu`: 
 ```
 echo 'export PATH=~/.local/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
+```
+
+- shut down all other instances of this kernel, or else tensorflow will error
+- run the following, ensure GPU listed:
+
+```
+from tensorflow.python.client import device_lib
+print(device_lib.list_local_devices())
+```
+
+for specific install:
+```
+conda create -n kaggle1 python=3.7.6
+source activate kaggle1
+conda install ipykernel
+ipython kernel install --user --name=kaggle1
+pip install pandas
+pip install keras-tuner 
+pip install tensorflow-gpu
 ```
 
 #### install cuda 10.2.89, cudnn 7.6.5.32, and tensorflow 2.4, Ubuntu 18.04 to match kaggle
