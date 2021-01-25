@@ -14,7 +14,7 @@ sudo chown -R $USER:$USER anaconda3
 (driver vs cuda versions: https://docs.nvidia.com/deploy/cuda-compatibility/index.html)
 
 - download desired compatible driver: https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
-- in our case: https://www.nvidia.com/Download/driverResults.aspx/148435/en-us
+- in our case: https://www.nvidia.com/Download/driverResults.aspx/153717/en-us
 - install manually: https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux
 - ensure working with `nvidia-smi`
 - check ubuntu architecture: `uname -m`
