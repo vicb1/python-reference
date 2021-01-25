@@ -1,8 +1,7 @@
 install anaconda:
 ```
-sudo bash ./Downloads/Anaconda3-2020.11-Linux-x86_64.sh
+sudo bash ./Anaconda3-2020.11-Linux-x86_64.sh
 echo 'export PATH=~/anaconda3/bin:$PATH' >> ~/.bashrc
-nano ~/.bashrc
 source ~/.bashrc
 ```
 
@@ -14,8 +13,6 @@ source ~/.bashrc
 - download desired compatible driver: https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
 - install manually: https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux
 - ensure working with `nvidia-smi`
-- ensure working with `nvcc --version` and `whereis cuda` ?
-- install cudnn and see if works?
 - check for same version: https://developer.nvidia.com/cuda-toolkit-archive and run:
 ```
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin
@@ -26,16 +23,19 @@ sudo apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub
 sudo apt-get update
 sudo apt-get -y install cuda
 ```
+- check install directory, for example `/usr/local/cuda-10.2`, then run:
+```
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+source ~/.bashrc 
+```
 - ensure working with `nvcc --version` and `whereis cuda`
 
--  https://stackoverflow.com/questions/55224016/importerror-libcublas-so-10-0-cannot-open-shared-object-file-no-such-file-or
-
-Using cudnn:
+Using cudnn download https://developer.nvidia.com/rdp/cudnn-download specifically:
 https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.2_20191118/cudnn-10.2-linux-x64-v7.6.5.32.tgz
 
 Install cudnn per:
-- try this first: https://stackoverflow.com/questions/55224016/importerror-libcublas-so-10-0-cannot-open-shared-object-file-no-such-file-or
-- if doesn't work, try this: https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
+https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
+
 ```
 sudo cp cuda/include/cudnn.h /usr/local/cuda-10.2/include/
 sudo cp cuda/lib64/libcudnn* /usr/local/cuda-10.2/lib64/
@@ -44,6 +44,8 @@ echo 'export LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH' >> ~/.
 echo 'export LD_LIBRARY_PATH=/usr/local/cuda-10.2/include:$LD_LIBRARY_PATH' >> ~/.bashrc  
 source ~/.bashrc 
 ```
+
+Alternate install: https://stackoverflow.com/questions/55224016/importerror-libcublas-so-10-0-cannot-open-shared-object-file-no-such-file-or
 
 ```
 conda create -n kaggle1 python=3.7.6
