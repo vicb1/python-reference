@@ -28,13 +28,14 @@ sudo apt-get -y install cuda
 ```
 - ensure working with `nvcc --version` and `whereis cuda`
 
+-  https://stackoverflow.com/questions/55224016/importerror-libcublas-so-10-0-cannot-open-shared-object-file-no-such-file-or
+
 Using cudnn:
 https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.2_20191118/cudnn-10.2-linux-x64-v7.6.5.32.tgz
 
 Install cudnn per:
-https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
-
-If this doesn't work, look for cuda folder such as: `/usr/local/cuda-10.2`
+- try this first: https://stackoverflow.com/questions/55224016/importerror-libcublas-so-10-0-cannot-open-shared-object-file-no-such-file-or
+- if doesn't work, try this: https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
 ```
 sudo cp cuda/include/cudnn.h /usr/local/cuda-10.2/include/
 sudo cp cuda/lib64/libcudnn* /usr/local/cuda-10.2/lib64/
