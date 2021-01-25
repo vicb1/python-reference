@@ -6,6 +6,82 @@ source ~/.bashrc
 sudo chown -R $USER:$USER anaconda3
 ```
 
+#### v3 install cuda 10.1, cudnn 7.6.5.32, and tensorflow 2.3, Ubuntu 18.04
+(kaggle env: https://github.com/Kaggle/docker-python)
+
+(tensorflow compatabilities: https://www.tensorflow.org/install/source#gpu)
+
+(driver vs cuda versions: https://docs.nvidia.com/deploy/cuda-compatibility/index.html)
+
+- download desired compatible driver: https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
+- in our case: https://www.nvidia.com/Download/driverResults.aspx/148435/en-us
+- install manually: https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux
+- ensure working with `nvidia-smi`
+- check ubuntu architecture: `uname -m`
+- install compatible cuda version: https://developer.nvidia.com/cuda-toolkit-archive and run:
+```
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin
+sudo mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600
+sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub
+sudo add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/ /"
+sudo apt-get update
+sudo apt-get -y install cuda
+```
+- check install directory, for example `/usr/local/cuda-10.1`, then run:
+```
+echo 'export PATH=/usr/local/cuda-10.1/bin${PATH:+:${PATH}}' >> ~/.bashrc
+source ~/.bashrc 
+```
+- ensure working with `nvcc --version` and `whereis cuda`
+
+Using cudnn download https://developer.nvidia.com/rdp/cudnn-download specifically:
+https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.1_20191031/cudnn-10.1-linux-x64-v7.6.5.32.tgz
+
+```
+sudo cp cuda/include/cudnn.h /usr/local/cuda-10.1/include/
+sudo cp cuda/lib64/libcudnn* /usr/local/cuda-10.1/lib64/
+sudo chmod a+r /usr/local/cuda-10.2/include/cudnn.h /usr/local/cuda-10.1/lib64/libcudnn*
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-10.1/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-10.1/include:$LD_LIBRARY_PATH' >> ~/.bashrc  
+source ~/.bashrc 
+```
+
+Alternate installs: 
+- https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
+- https://stackoverflow.com/questions/55224016/importerror-libcublas-so-10-0-cannot-open-shared-object-file-no-such-file-or
+
+```
+conda create -n kaggle1 python=3.7.6
+source activate kaggle1
+pip install tensorflow-gpu==2.3.1
+echo $CONDA_PREFIX # to see env location
+```
+
+to appease warnings from running `pip install tensorflow-gpu`: 
+```
+echo 'export PATH=~/.local/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+```
+
+- shut down all other instances of this kernel, or else tensorflow will error
+- run the following, ensure GPU listed:
+
+```
+from tensorflow.python.client import device_lib
+print(device_lib.list_local_devices())
+```
+
+for specific install:
+```
+conda create -n kaggle1 python=3.7.6
+source activate kaggle1
+conda install ipykernel
+ipython kernel install --user --name=kaggle1
+pip install pandas
+pip install keras-tuner 
+pip install tensorflow-gpu
+```
+
 #### v2 install cuda 10.2.89, cudnn 7.6.5.32, and tensorflow 2.4, Ubuntu 18.04 to match kaggle
 (kaggle env: https://github.com/Kaggle/docker-python)
 
@@ -26,7 +102,7 @@ sudo apt-get -y install cuda
 ```
 - check install directory, for example `/usr/local/cuda-10.2`, then run:
 ```
-echo 'export LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+echo 'export PATH=/usr/local/cuda-10.2/bin${PATH:+:${PATH}}' >> ~/.bashrc
 source ~/.bashrc 
 ```
 - ensure working with `nvcc --version` and `whereis cuda`
@@ -51,7 +127,7 @@ Alternate installs:
 ```
 conda create -n kaggle1 python=3.7.6
 source activate kaggle1
-pip install tensorflow-gpu
+pip install tensorflow-gpu==2.3.1
 echo $CONDA_PREFIX # to see env location
 ```
 
