@@ -58,6 +58,11 @@ pip install tensorflow-gpu
 *shut down all other instances of this kernel, or else tensorflow will error *
 ```
 
+to appease warnings from running `pip install tensorflow-gpu`: 
+```
+echo 'export PATH=~/.local/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+```
 
 #### install cuda 10.2.89, cudnn 7.6.5.32, and tensorflow 2.4, Ubuntu 18.04 to match kaggle
 (kaggle env: https://github.com/Kaggle/docker-python)
