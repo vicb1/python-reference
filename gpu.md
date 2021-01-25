@@ -9,6 +9,8 @@ source ~/.bashrc
 #### install cuda 10.2.89, cudnn 7.6.5.32, and tensorflow 2.4, Ubuntu 18.04 to match kaggle
 (kaggle env: https://github.com/Kaggle/docker-python)
 
+(tensorflow compatabilities: https://www.tensorflow.org/install/source#gpu)
+
 per: https://forums.developer.nvidia.com/t/installing-cuda-10-2-on-ubuntu-18-04-3/107773
 and: https://askubuntu.com/questions/1260039/how-to-install-specific-nvidia-driver-like-nvidia-driver-440-440-33-01-deb
 ```
