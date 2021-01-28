@@ -3,7 +3,7 @@ install anaconda:
 sudo bash ./Anaconda3-2020.11-Linux-x86_64.sh
 echo 'export PATH=~/anaconda3/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
-sudo chown -R $USER:$USER anaconda3
+sudo chown -R $USER:$USER ~/anaconda3
 ```
 
 #### v3 install cuda 10.1, cudnn 7.6.5.32, and tensorflow 2.3, Ubuntu 18.04
