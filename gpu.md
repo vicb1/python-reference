@@ -16,6 +16,7 @@ sudo chown -R $USER:$USER ~/anaconda3
 - https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html
 - https://docs.nvidia.com/cuda/cuda-quick-start-guide/index.html#ubuntu-x86_64
 ```
+sudo apt install make
 sudo touch /etc/modprobe.d/blacklist-nouveau.conf
 sudo nano /etc/modprobe.d/blacklist-nouveau.conf
 ```
@@ -26,9 +27,11 @@ options nouveau modeset=0
 ```
 then:
 ```
+reboot
 sudo telinit 3  
 sudo sh cuda_<version>_linux.run --silent
 sudo nvidia-xconfig
+reboot
 ```
 
 - install compatible cuda version: https://developer.nvidia.com/cuda-toolkit-archive and run:
