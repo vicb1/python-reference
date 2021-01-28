@@ -56,13 +56,14 @@ source ~/.bashrc
 ```
 
 Alternate installs: 
+- https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html
 - https://askubuntu.com/questions/1230645/when-is-cuda-gonna-be-released-for-ubuntu-20-04
 - https://stackoverflow.com/questions/55224016/importerror-libcublas-so-10-0-cannot-open-shared-object-file-no-such-file-or
 
 ```
 conda create -n kaggle1 python=3.7.6
 source activate kaggle1
-pip install tensorflow-gpu==2.3.1
+pip install tensorflow-gpu==2.3.0
 echo $CONDA_PREFIX # to see env location
 ```
 
