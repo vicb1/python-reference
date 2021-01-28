@@ -15,7 +15,18 @@ sudo chown -R $USER:$USER anaconda3
 
 - download desired compatible driver: https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
 - in our case: https://www.nvidia.com/Download/driverResults.aspx/153717/en-us
-- install manually: https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux
+- install manually (ref: https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux)
+```
+sudo dpkg --add-architecture i386
+sudo apt update
+sudo apt install build-essential libc6:i386 sudo bash -c "echo blacklist nouveau > /etc/modprobe.d/blacklist-nvidia-nouveau.conf"
+sudo bash -c "echo options nouveau modeset=0 >> /etc/modprobe.d/blacklist-nvidia-nouveau.conf"libglvnd-dev pkg-config
+sudo update-initramfs -u
+reboot
+sudo telinit 3
+sudo bash NVIDIA-Linux-x86_64-410.73.bin
+reboot
+```
 - ensure working with `nvidia-smi`
 - check ubuntu architecture: `uname -m`
 - install compatible cuda version: https://developer.nvidia.com/cuda-toolkit-archive and run:
