@@ -6,6 +6,10 @@ source ~/.bashrc
 sudo chown -R $USER:$USER ~/anaconda3
 ```
 
+run pycharm:
+
+`/snap/pycharm-community/current/bin/pycharm.sh`
+
 #### v4 install cuda 10.1, cudnn 7.6.5.32, and tensorflow 2.3, Ubuntu 18.04
 (kaggle env: https://github.com/Kaggle/docker-python)
 
@@ -95,6 +99,7 @@ source ~/.bashrc
 
 - shut down all other instances of this kernel, or else tensorflow will error
 - per https://stackoverflow.com/questions/43691706/pycharm-tensorflow-importerror-but-works-fine-with-terminal and https://stackoverflow.com/questions/27063361/how-to-run-pycharm-in-ubuntu-run-in-terminal-or-run
+
 `/snap/pycharm-community/current/bin/pycharm.sh`
 
 - run the following, ensure GPU listed:
