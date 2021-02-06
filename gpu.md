@@ -108,8 +108,9 @@ pip install keras-tuner
 ```
 sudo dpkg --add-architecture i386
 sudo apt update
-sudo apt install build-essential libc6:i386 sudo bash -c "echo blacklist nouveau > /etc/modprobe.d/blacklist-nvidia-nouveau.conf"
-sudo bash -c "echo options nouveau modeset=0 >> /etc/modprobe.d/blacklist-nvidia-nouveau.conf"libglvnd-dev pkg-config
+sudo apt install build-essential libc6:i386 
+sudo bash -c "echo blacklist nouveau > /etc/modprobe.d/blacklist-nvidia-nouveau.conf"
+sudo bash -c "echo options nouveau modeset=0 >> /etc/modprobe.d/blacklist-nvidia-nouveau.conf"
 sudo update-initramfs -u
 reboot
 sudo telinit 3
