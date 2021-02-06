@@ -102,6 +102,15 @@ pip install keras-tuner
 
 (driver vs cuda versions: https://docs.nvidia.com/deploy/cuda-compatibility/index.html)
 
+- per https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#pre-installation-actions
+```
+lspci | grep -i nvidia
+uname -m && cat /etc/*release
+$ gcc --version
+uname -r
+sudo apt-get install linux-headers-$(uname -r)
+```
+
 - download desired compatible driver: https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
 - in our case: https://www.nvidia.com/Download/driverResults.aspx/153717/en-us
 - install manually (ref: https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux)
@@ -126,12 +135,22 @@ sudo sh cuda_10.1.243_418.87.00_linux.run
 ```
 *unchecked install driver... is that ok?  Or can we also skip the previous driver install step if we do this?*
 
+- per https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#post-installation-actions
 - check install directory, for example `/usr/local/cuda-10.1`, then run:
 ```
 echo 'export PATH=/usr/local/cuda-10.1/bin${PATH:+:${PATH}}' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-11.2/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}' >> ~/.bashrc
 source ~/.bashrc 
 ```
 - ensure working with `nvcc --version` and `whereis cuda`
+- check for driver errors by looking at `nvidia-installer.log` and cuda errors by looking at `nvidia-installer.log`
+- to uninstall, run `/usr/local/cuda-10.1/bin/cuda-uninstaller`
+- per https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#recommended-post
+```
+/usr/bin/nvidia-persistenced --verbose
+cat /proc/driver/nvidia/version
+```
+
 
 Using cudnn download https://developer.nvidia.com/rdp/cudnn-download specifically:
 https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.1_20191031/cudnn-10.1-linux-x64-v7.6.5.32.tgz
