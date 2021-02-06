@@ -94,6 +94,9 @@ source ~/.bashrc
 ```
 
 - shut down all other instances of this kernel, or else tensorflow will error
+- per https://stackoverflow.com/questions/43691706/pycharm-tensorflow-importerror-but-works-fine-with-terminal and https://stackoverflow.com/questions/27063361/how-to-run-pycharm-in-ubuntu-run-in-terminal-or-run
+`/snap/pycharm-community/current/bin/pycharm.sh`
+
 - run the following, ensure GPU listed:
 
 ```
