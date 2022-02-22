@@ -8,7 +8,7 @@ sudo chown -R $USER:$USER ~/anaconda3
 
 run pycharm:
 
-`/snap/pycharm-community/current/bin/pycharm.sh`
+`/snap/pycharm-community/current/bin/pycharm.sh` or add `sudo`
 
 #### v4 install cuda 10.1, cudnn 7.6.5.32, and tensorflow 2.3, Ubuntu 18.04
 (kaggle env: https://github.com/Kaggle/docker-python)
